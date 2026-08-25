@@ -1,263 +1,297 @@
-<!DOCTYPE html>
+     <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>MoveCare - تحرك بأمان</title>
+  <title>MoveCare - تمارينك اليومية</title>
 
   <style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
       font-family: Arial, sans-serif;
     }
 
     body {
-      background: #f4f8f7;
-      color: #1f2933;
+      margin: 0;
+      background: #f4f7f8;
+      color: #222;
     }
 
     header {
-      background: #0f766e;
+      background: #1677ff;
       color: white;
-      padding: 20px;
       text-align: center;
+      padding: 35px 15px;
+      border-radius: 0 0 25px 25px;
     }
 
     header h1 {
-      font-size: 30px;
-      margin-bottom: 8px;
+      margin: 0 0 10px;
+      font-size: 34px;
     }
 
     header p {
-      font-size: 16px;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 55px 20px;
-      background: white;
-    }
-
-    .hero h2 {
-      font-size: 30px;
-      color: #115e59;
-      margin-bottom: 15px;
-    }
-
-    .hero p {
-      max-width: 600px;
-      margin: auto;
-      line-height: 1.8;
-      color: #4b5563;
-    }
-
-    .button {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 14px 28px;
-      background: #0f766e;
-      color: white;
-      text-decoration: none;
-      border-radius: 12px;
+      margin: 0;
       font-size: 17px;
-      cursor: pointer;
-      border: none;
     }
 
-    .button:hover {
-      background: #115e59;
-    }
-
-    .section {
-      padding: 35px 20px;
-      max-width: 1000px;
+    .container {
+      max-width: 900px;
       margin: auto;
+      padding: 25px 15px;
     }
 
-    .section h2 {
+    .start {
       text-align: center;
       margin-bottom: 25px;
-      color: #115e59;
     }
 
-    .cards {
+    .start button {
+      background: #1677ff;
+      color: white;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 12px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    .categories {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 15px;
-    }
-
-    .card {
-      background: white;
-      padding: 25px 15px;
-      text-align: center;
-      border-radius: 16px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-      cursor: pointer;
-    }
-
-    .card .icon {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
-
-    .card h3 {
-      color: #115e59;
-      margin-bottom: 8px;
-    }
-
-    .card p {
-      color: #6b7280;
-      font-size: 14px;
-    }
-
-    .ai-box {
-      background: #e0f2f1;
-      padding: 30px 20px;
-      border-radius: 20px;
-      text-align: center;
       margin-top: 20px;
     }
 
-    .ai-box h2 {
-      color: #115e59;
+    .category {
+      background: white;
+      padding: 25px 15px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: 0.2s;
     }
 
-    .warning {
-      background: #fff7ed;
-      border-right: 5px solid #f97316;
-      padding: 18px;
-      margin-top: 25px;
+    .category:hover {
+      transform: translateY(-3px);
+    }
+
+    .icon {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    .category h3 {
+      margin: 5px 0;
+    }
+
+    .category p {
+      color: #666;
+      margin: 5px 0;
+    }
+
+    #exercises {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .exercise {
+      background: white;
+      margin: 15px 0;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    }
+
+    .exercise h3 {
+      margin-top: 0;
+      color: #1677ff;
+    }
+
+    .exercise button {
+      background: #1677ff;
+      color: white;
+      border: none;
+      padding: 10px 18px;
       border-radius: 10px;
-      line-height: 1.8;
-      color: #7c2d12;
+      cursor: pointer;
     }
 
     footer {
-      background: #134e4a;
-      color: white;
       text-align: center;
-      padding: 25px 15px;
-      margin-top: 30px;
-      line-height: 1.8;
-    }
-
-    @media (max-width: 500px) {
-      .hero h2 {
-        font-size: 25px;
-      }
-
-      header h1 {
-        font-size: 26px;
-      }
+      padding: 30px 10px;
+      color: #777;
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <h1>MoveCare</h1>
-    <p>تحرك بأمان، خطوة بخطوة</p>
-  </header>
+<header>
+  <h1>MoveCare</h1>
+  <p>تحرك أكثر، عِش أفضل 💪</p>
+</header>
 
-  <section class="hero">
-    <h2>ابدأ رحلة الحركة الآمنة</h2>
+<div class="container">
 
-    <p>
-      MoveCare يساعدك على اكتشاف التمارين والمعلومات المناسبة
-      لقدراتك وقيودك الحركية، مع التركيز على السلامة.
-    </p>
+  <div class="start">
+    <h2>ابدأ الآن</h2>
+    <p>اختر المنطقة التي تريد تمرينها</p>
+  </div>
 
-    <button class="button" onclick="startMoveCare()">
-      ابدأ الآن
-    </button>
-  </section>
+  <div class="categories">
 
-  <section class="section">
-
-    <h2>اختر المنطقة</h2>
-
-    <div class="cards">
-
-      <div class="card" onclick="chooseArea('الركبة')">
-        <div class="icon">🦵</div>
-        <h3>الركبة</h3>
-        <p>تمارين ومعلومات عامة</p>
-      </div>
-
-      <div class="card" onclick="chooseArea('الظهر')">
-        <div class="icon">🧍</div>
-        <h3>الظهر</h3>
-        <p>حركة وتمارين خفيفة</p>
-      </div>
-
-      <div class="card" onclick="chooseArea('الكتف')">
-        <div class="icon">💪</div>
-        <h3>الكتف</h3>
-        <p>تمارين للحركة والمرونة</p>
-      </div>
-
-      <div class="card" onclick="chooseArea('الكاحل')">
-        <div class="icon">🦶</div>
-        <h3>الكاحل</h3>
-        <p>تمارين حركة عامة</p>
-      </div>
-
+    <div class="category" onclick="showExercises('legs')">
+      <div class="icon">🦵</div>
+      <h3>الرجل</h3>
+      <p>تمارين للساقين</p>
     </div>
 
-  </section>
+    <div class="category" onclick="showExercises('back')">
+      <div class="icon">🏃</div>
+      <h3>الظهر</h3>
+      <p>تمارين للظهر</p>
+    </div>
 
-  <section class="section">
+    <div class="category" onclick="showExercises('chest')">
+      <div class="icon">💪</div>
+      <h3>الصدر</h3>
+      <p>تمارين للصدر</p>
+    </div>
 
-    <div class="ai-box">
+    <div class="category" onclick="showExercises('arms')">
+      <div class="icon">💪</div>
+      <h3>الذراعان</h3>
+      <p>تمارين للذراعين</p>
+    </div>
 
-      <h2>🤖 مساعد MoveCare</h2>
+    <div class="category" onclick="showExercises('abs')">
+      <div class="icon">🔥</div>
+      <h3>البطن</h3>
+      <p>تمارين للبطن</p>
+    </div>
 
-      <p style="margin-top: 15px; line-height: 1.8;">
-        مساعد ذكي لمساعدتك في العثور على معلومات وتمارين
-        مناسبة ضمن القيود التي حددها لك المختص.
-      </p>
+    <div class="category" onclick="showExercises('full')">
+      <div class="icon">🏋️</div>
+      <h3>الجسم كامل</h3>
+      <p>تمارين متنوعة</p>
+    </div>
 
-      <button class="button" onclick="openAI()">
-        تحدث مع المساعد
+  </div>
+
+  <div id="exercises">
+    <h2 id="exerciseTitle"></h2>
+    <div id="exerciseList"></div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 MoveCare
+</footer>
+
+<script>
+
+const data = {
+
+  legs: {
+    title: "تمارين الرجل 🦵",
+    exercises: [
+      ["القرفصاء", "قف بشكل مستقيم ثم انزل بجسمك ببطء واصعد مجددًا."],
+      ["الاندفاع", "خذ خطوة إلى الأمام ثم انزل بجسمك وارجع إلى وضع البداية."],
+      ["رفع الساق", "ارفع ساقك بشكل مستقيم ثم أعدها ببطء."]
+    ]
+  },
+
+  back: {
+    title: "تمارين الظهر 🏃",
+    exercises: [
+      ["تمدد الظهر", "اجلس أو استلقِ بشكل مريح ومدد ظهرك بلطف."],
+      ["وضعية الطفل", "اجلس على ركبتيك ومد ذراعيك إلى الأمام بلطف."],
+      ["تمدد جانبي", "مد جسمك إلى أحد الجانبين ثم بدّل الجهة."]
+    ]
+  },
+
+  chest: {
+    title: "تمارين الصدر 💪",
+    exercises: [
+      ["تمرين الضغط", "ضع يديك على الأرض وادفع جسمك للأعلى ثم انزل ببطء."],
+      ["ضغط على الحائط", "ضع يديك على الحائط وادفع جسمك نحوه ثم ابتعد."],
+      ["ضغط الركبتين", "نفذ تمرين الضغط مع إبقاء الركبتين على الأرض."]
+    ]
+  },
+
+  arms: {
+    title: "تمارين الذراعين 💪",
+    exercises: [
+      ["دوائر الذراعين", "مد ذراعيك وقم بحركات دائرية صغيرة."],
+      ["تمدد الذراع", "مد ذراعك أمامك واسحبه بلطف باليد الأخرى."],
+      ["رفع الذراعين", "ارفع ذراعيك إلى الأعلى ثم أعدهما ببطء."]
+    ]
+  },
+
+  abs: {
+    title: "تمارين البطن 🔥",
+    exercises: [
+      ["بلانك", "ثبت جسمك في وضع مستقيم مع الاعتماد على الساعدين والقدمين."],
+      ["رفع الركبتين", "ارفع ركبتيك باتجاه جسمك بشكل متحكم."],
+      ["تمرين الدراجة", "حرّك ساقيك بالتناوب بحركة تشبه ركوب الدراجة."]
+    ]
+  },
+
+  full: {
+    title: "تمارين الجسم كامل 🏋️",
+    exercises: [
+      ["القرفصاء", "انزل بجسمك ببطء ثم عد إلى وضع الوقوف."],
+      ["الضغط", "نفذ تمرين الضغط بطريقة مريحة وآمنة."],
+      ["المشي في المكان", "امشِ في مكانك وارفع ركبتيك بشكل معتدل."],
+      ["تمدد الجسم", "مد ذراعيك وساقيك بلطف لتحريك الجسم."]
+    ]
+  }
+
+};
+
+function showExercises(type) {
+
+  const section = document.getElementById("exercises");
+  const title = document.getElementById("exerciseTitle");
+  const list = document.getElementById("exerciseList");
+
+  title.textContent = data[type].title;
+  list.innerHTML = "";
+
+  data[type].exercises.forEach((exercise) => {
+
+    const div = document.createElement("div");
+    div.className = "exercise";
+
+    div.innerHTML = `
+      <h3>${exercise[0]}</h3>
+      <p>${exercise[1]}</p>
+      <button onclick="alert('ابدأ ببطء وتوقف إذا شعرت بالألم.')">
+        ابدأ التمرين
       </button>
+    `;
 
-    </div>
+    list.appendChild(div);
 
-    <div class="warning">
-      ⚠️ <strong>تنبيه:</strong>
-      MoveCare ليس طبيبًا ولا يستبدل الطبيب أو أخصائي العلاج الطبيعي.
-      لا تستخدم الموقع لتشخيص الأمراض أو تغيير الأدوية التي وصفها لك الطبيب.
-    </div>
+  });
 
-  </section>
+  section.style.display = "block";
 
-  <footer>
-    <strong>MoveCare</strong>
-    <br>
-    تحرك بأمان، خطوة بخطوة
-    <br>
-    © 2026 MoveCare
-  </footer>
+  section.scrollIntoView({
+    behavior: "smooth"
+  });
+}
 
-  <script>
-
-    function startMoveCare() {
-      alert("مرحبًا بك في MoveCare! اختر المنطقة التي تريد معرفة المزيد عنها.");
-    }
-
-    function chooseArea(area) {
-      alert("لقد اخترت: " + area + "\nسنضيف قريبًا التمارين والمعلومات الخاصة بهذه المنطقة.");
-    }
-
-    function openAI() {
-      alert("مساعد MoveCare AI سيكون متاحًا في المرحلة القادمة 🤖");
-    }
-
-  </script>
+</script>
 
 </body>
-  </html>
+</html>
+      
