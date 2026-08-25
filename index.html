@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MoveCare | تمارين منزلية</title>
+<title>MoveCare - تمارين منزلية</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
 
@@ -15,293 +17,533 @@
 
 body{
   margin:0;
-  background:#f4f8ff;
+  background:#f4f7fb;
   color:#172033;
-  overflow-x:hidden;
 }
 
-/* زخارف الخلفية */
+button{
+  font-family:inherit;
+  cursor:pointer;
+}
 
-body::before{
-  content:"";
+.hidden{
+  display:none!important;
+}
+
+/* =========================
+   الخلفية
+========================= */
+
+.background-circle{
   position:fixed;
+  border-radius:50%;
+  z-index:-1;
+  opacity:.7;
+}
+
+.circle1{
   width:260px;
   height:260px;
-  border-radius:50%;
   background:#dceaff;
   top:-100px;
-  right:-80px;
-  z-index:-1;
+  right:-90px;
 }
 
-body::after{
-  content:"";
-  position:fixed;
+.circle2{
   width:220px;
   height:220px;
-  border-radius:50%;
-  background:#e8f7ef;
-  bottom:-90px;
-  left:-70px;
-  z-index:-1;
+  background:#dff6e9;
+  bottom:-100px;
+  left:-80px;
 }
 
-/* الرأس */
+/* =========================
+   الهيدر
+========================= */
 
 header{
-  background:linear-gradient(135deg,#1677ff,#49a0ff);
+  background:linear-gradient(135deg,#1477ff,#4da2ff);
   color:white;
-  padding:28px 18px;
+  padding:22px 18px;
   border-radius:0 0 30px 30px;
-  box-shadow:0 5px 20px #b9d5ff;
+  box-shadow:0 5px 25px rgba(22,119,255,.25);
 }
 
-.header-content{
+.header-inner{
   max-width:900px;
   margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
 .logo{
-  font-size:30px;
+  font-size:27px;
   font-weight:bold;
 }
 
-header p{
-  margin:8px 0 0;
+.header-sub{
+  margin-top:6px;
+  font-size:14px;
   opacity:.9;
 }
 
-/* المحتوى */
+/* =========================
+   المحتوى
+========================= */
 
 .container{
   max-width:900px;
   margin:auto;
-  padding:20px 15px 40px;
+  padding:18px 15px 50px;
 }
 
-/* الترحيب */
-
-.welcome{
+.card{
   background:white;
   border-radius:22px;
-  padding:22px;
-  margin-top:5px;
-  box-shadow:0 5px 20px rgba(0,0,0,.06);
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 5px 20px rgba(20,40,80,.07);
 }
 
-.welcome h2{
-  margin-top:0;
-}
-
-.start-btn{
+.primary{
+  width:100%;
+  border:0;
   background:#1677ff;
   color:white;
-  border:0;
-  padding:13px 25px;
+  padding:14px;
   border-radius:13px;
   font-size:17px;
-  cursor:pointer;
 }
 
-/* الأيام */
-
-.section-title{
-  margin-top:28px;
+.secondary{
+  width:100%;
+  border:0;
+  background:#edf2f8;
+  color:#172033;
+  padding:13px;
+  border-radius:13px;
+  font-size:16px;
 }
+
+/* =========================
+   الصفحة الرئيسية
+========================= */
+
+.hero{
+  padding:25px 20px;
+}
+
+.hero h1{
+  margin:0 0 8px;
+  font-size:27px;
+}
+
+.hero p{
+  color:#64748b;
+  line-height:1.7;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.stat{
+  background:#f5f8fd;
+  border-radius:15px;
+  text-align:center;
+  padding:15px 5px;
+}
+
+.stat strong{
+  display:block;
+  font-size:22px;
+  color:#1677ff;
+}
+
+.stat span{
+  font-size:12px;
+  color:#68778c;
+}
+
+/* =========================
+   الأيام
+========================= */
 
 .days{
   display:grid;
   grid-template-columns:repeat(7,1fr);
-  gap:8px;
+  gap:7px;
 }
 
 .day{
-  background:white;
   border:2px solid transparent;
-  border-radius:14px;
-  padding:12px 4px;
+  background:#f5f8fd;
+  border-radius:13px;
+  padding:10px 3px;
   text-align:center;
-  cursor:pointer;
-  box-shadow:0 3px 10px rgba(0,0,0,.05);
 }
 
-.day:hover{
+.day.selected{
+  background:#1677ff;
+  color:white;
   border-color:#1677ff;
 }
 
-.day.active{
-  background:#1677ff;
-  color:white;
+.day.disabled{
+  opacity:.45;
 }
 
 .day-name{
-  font-size:13px;
+  font-size:12px;
 }
 
-.day-number{
-  font-size:20px;
-  font-weight:bold;
+.day-check{
+  font-size:18px;
   margin-top:5px;
 }
 
-/* منطقة التمرين */
+/* =========================
+   التمارين
+========================= */
 
-.workout{
-  margin-top:25px;
-  background:white;
-  border-radius:22px;
-  padding:20px;
-  box-shadow:0 5px 20px rgba(0,0,0,.06);
-}
-
-.workout-header{
+.exercise-row{
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  gap:10px;
+  gap:12px;
+  padding:13px 0;
+  border-bottom:1px solid #edf0f4;
 }
 
-.workout-header h2{
-  margin:0;
-}
-
-.badge{
-  background:#e7f0ff;
+.exercise-number{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:#e9f2ff;
   color:#1677ff;
-  padding:7px 12px;
-  border-radius:20px;
-  font-size:13px;
-}
-
-/* الشخصية */
-
-.character{
-  margin:20px 0;
-  min-height:180px;
-  background:linear-gradient(135deg,#eef6ff,#f7fbff);
-  border-radius:20px;
   display:flex;
   align-items:center;
   justify-content:center;
-  flex-direction:column;
-  border:1px solid #e0ecff;
-}
-
-.character-icon{
-  font-size:80px;
-}
-
-.character p{
-  margin:5px 0;
-  color:#65748b;
-}
-
-/* التمارين */
-
-.exercise{
-  border:1px solid #e5eaf2;
-  border-radius:17px;
-  padding:16px;
-  margin-top:12px;
-}
-
-.exercise-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.exercise h3{
-  margin:0;
+  font-weight:bold;
+  flex-shrink:0;
 }
 
 .exercise-info{
-  color:#68778c;
-  font-size:14px;
+  flex:1;
 }
 
-.exercise button{
-  width:100%;
-  margin-top:12px;
-  border:0;
-  background:#1677ff;
-  color:white;
-  padding:11px;
-  border-radius:11px;
-  cursor:pointer;
-  font-size:15px;
+.exercise-info strong{
+  display:block;
 }
 
-/* التقدم */
-
-.progress-box{
-  margin-top:25px;
-  background:white;
-  padding:20px;
-  border-radius:20px;
-  box-shadow:0 5px 20px rgba(0,0,0,.06);
+.exercise-info span{
+  font-size:12px;
+  color:#748197;
 }
 
-.progress-bar{
-  height:12px;
-  background:#e7edf5;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:10px;
-}
+/* =========================
+   شاشة الإعداد
+========================= */
 
-.progress{
-  width:0%;
-  height:100%;
-  background:#1677ff;
-  transition:.4s;
-}
-
-/* المؤقت */
-
-.timer{
-  display:none;
+.setup-screen{
   position:fixed;
   inset:0;
-  background:rgba(10,20,40,.75);
-  z-index:10;
+  background:#f4f7fb;
+  z-index:100;
+  overflow-y:auto;
+}
+
+.setup-box{
+  max-width:600px;
+  margin:auto;
+  padding:30px 18px 50px;
+}
+
+.setup-logo{
+  text-align:center;
+  font-size:34px;
+  font-weight:bold;
+  color:#1677ff;
+  margin:15px 0;
+}
+
+.setup-step{
+  display:none;
+}
+
+.setup-step.active{
+  display:block;
+}
+
+.setup-title{
+  font-size:25px;
+  margin-bottom:8px;
+}
+
+.setup-description{
+  color:#68778c;
+  line-height:1.6;
+}
+
+.option-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin:20px 0;
+}
+
+.option{
+  background:white;
+  border:2px solid #e5eaf1;
+  border-radius:17px;
+  padding:18px 10px;
+  text-align:center;
+}
+
+.option.selected{
+  border-color:#1677ff;
+  background:#eef5ff;
+}
+
+.option-icon{
+  font-size:30px;
+}
+
+.option strong{
+  display:block;
+  margin-top:8px;
+}
+
+.day-options{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px;
+  margin:20px 0;
+}
+
+.day-option{
+  background:white;
+  border:2px solid #e4e9f0;
+  border-radius:14px;
+  padding:14px;
+  text-align:center;
+}
+
+.day-option.selected{
+  background:#1677ff;
+  color:white;
+  border-color:#1677ff;
+}
+
+/* =========================
+   شاشة التمرين
+========================= */
+
+.workout-screen{
+  position:fixed;
+  inset:0;
+  background:#f4f7fb;
+  z-index:90;
+  overflow-y:auto;
+}
+
+.workout-top{
+  max-width:700px;
+  margin:auto;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.back-btn{
+  border:0;
+  background:white;
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  font-size:20px;
+}
+
+.session-info{
+  text-align:center;
+}
+
+.session-info strong{
+  display:block;
+}
+
+.session-info span{
+  font-size:12px;
+  color:#738096;
+}
+
+.progress-container{
+  max-width:700px;
+  margin:auto;
+  padding:0 15px;
+}
+
+.progress-bg{
+  height:7px;
+  background:#dfe6ef;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:#1677ff;
+  transition:.3s;
+}
+
+/* =========================
+   منطقة 3D
+========================= */
+
+.model-card{
+  max-width:700px;
+  margin:15px auto;
+  padding:0 15px;
+}
+
+.model-box{
+  height:330px;
+  background:linear-gradient(145deg,#eaf3ff,#f8fbff);
+  border-radius:25px;
+  overflow:hidden;
+  position:relative;
+  border:1px solid #dce8f7;
+}
+
+#threeContainer{
+  width:100%;
+  height:100%;
+}
+
+.model-label{
+  position:absolute;
+  top:15px;
+  right:15px;
+  background:rgba(255,255,255,.9);
+  padding:8px 12px;
+  border-radius:20px;
+  font-size:12px;
+  z-index:2;
+}
+
+/* =========================
+   معلومات التمرين
+========================= */
+
+.exercise-title{
+  text-align:center;
+  font-size:27px;
+  margin:15px 0 5px;
+}
+
+.exercise-description{
+  text-align:center;
+  color:#68778c;
+  line-height:1.6;
+  margin:0 auto;
+  max-width:500px;
+}
+
+.timer-number{
+  text-align:center;
+  font-size:68px;
+  font-weight:bold;
+  color:#1677ff;
+  margin:8px 0;
+}
+
+.timer-label{
+  text-align:center;
+  color:#748197;
+}
+
+.session-buttons{
+  max-width:500px;
+  margin:15px auto 30px;
+  padding:0 15px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.skip{
+  background:#edf2f8;
+  color:#172033;
+  border:0;
+  border-radius:13px;
+  padding:14px;
+  font-size:16px;
+}
+
+.pause{
+  background:#1677ff;
+  color:white;
+  border:0;
+  border-radius:13px;
+  padding:14px;
+  font-size:16px;
+}
+
+.rest-screen{
+  text-align:center;
+  padding:25px 15px;
+}
+
+.rest-icon{
+  font-size:65px;
+}
+
+.rest-screen h2{
+  font-size:28px;
+}
+
+.rest-number{
+  font-size:75px;
+  font-weight:bold;
+  color:#1677ff;
+}
+
+/* =========================
+   شاشة النهاية
+========================= */
+
+.finish{
+  position:fixed;
+  inset:0;
+  background:#f4f7fb;
+  z-index:120;
+  display:flex;
   align-items:center;
   justify-content:center;
   padding:20px;
 }
 
-.timer-box{
+.finish-box{
   background:white;
+  max-width:450px;
   width:100%;
-  max-width:380px;
   border-radius:25px;
-  padding:30px;
+  padding:30px 20px;
   text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.1);
 }
 
-.timer-number{
+.finish-icon{
   font-size:70px;
-  font-weight:bold;
-  color:#1677ff;
-  margin:15px;
 }
 
-.timer-box button{
-  border:0;
-  background:#1677ff;
-  color:white;
-  padding:12px 25px;
-  border-radius:12px;
-  cursor:pointer;
+.finish-box h1{
+  margin-bottom:8px;
 }
-
-.close-btn{
-  background:#e9eef5 !important;
-  color:#172033 !important;
-  margin-top:10px;
-}
-
-/* الهاتف */
 
 @media(max-width:600px){
 
@@ -309,8 +551,12 @@ header p{
     grid-template-columns:repeat(4,1fr);
   }
 
-  .logo{
-    font-size:26px;
+  .stats{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .model-box{
+    height:290px;
   }
 
 }
@@ -320,13 +566,166 @@ header p{
 
 <body>
 
+<div class="background-circle circle1"></div>
+<div class="background-circle circle2"></div>
+
+
+<!-- =========================
+     إعداد التطبيق لأول مرة
+========================= -->
+
+<div id="setupScreen" class="setup-screen">
+
+<div class="setup-box">
+
+<div class="setup-logo">
+MoveCare 🏠
+</div>
+
+
+<!-- الخطوة 1 -->
+
+<div class="setup-step active" id="setup1">
+
+<h1 class="setup-title">
+لنبدأ معًا 👋
+</h1>
+
+<p class="setup-description">
+سنقوم بإعداد برنامج مناسب لك. لن يستغرق الأمر سوى دقيقة.
+</p>
+
+<h3>ما هدفك؟</h3>
+
+<div class="option-grid">
+
+<div class="option" data-goal="نشاط ولياقة" onclick="selectGoal(this)">
+<div class="option-icon">🏃</div>
+<strong>النشاط واللياقة</strong>
+</div>
+
+<div class="option" data-goal="القوة" onclick="selectGoal(this)">
+<div class="option-icon">💪</div>
+<strong>تطوير القوة</strong>
+</div>
+
+<div class="option" data-goal="مرونة" onclick="selectGoal(this)">
+<div class="option-icon">🧘</div>
+<strong>المرونة</strong>
+</div>
+
+<div class="option" data-goal="روتين منزلي" onclick="selectGoal(this)">
+<div class="option-icon">🏠</div>
+<strong>روتين منزلي</strong>
+</div>
+
+</div>
+
+<button class="primary" onclick="nextSetup(2)">
+التالي
+</button>
+
+</div>
+
+
+<!-- الخطوة 2 -->
+
+<div class="setup-step" id="setup2">
+
+<h1 class="setup-title">
+ما الأيام التي تريد التمرين فيها؟ 📅
+</h1>
+
+<p class="setup-description">
+اختر الأيام التي تناسبك. يمكنك اختيار أكثر من يوم.
+</p>
+
+<div class="day-options">
+
+<div class="day-option" data-day="السبت" onclick="toggleSetupDay(this)">السبت</div>
+<div class="day-option" data-day="الأحد" onclick="toggleSetupDay(this)">الأحد</div>
+<div class="day-option" data-day="الاثنين" onclick="toggleSetupDay(this)">الاثنين</div>
+<div class="day-option" data-day="الثلاثاء" onclick="toggleSetupDay(this)">الثلاثاء</div>
+<div class="day-option" data-day="الأربعاء" onclick="toggleSetupDay(this)">الأربعاء</div>
+<div class="day-option" data-day="الخميس" onclick="toggleSetupDay(this)">الخميس</div>
+<div class="day-option" data-day="الجمعة" onclick="toggleSetupDay(this)">الجمعة</div>
+
+</div>
+
+<button class="primary" onclick="nextSetup(3)">
+التالي
+</button>
+
+</div>
+
+
+<!-- الخطوة 3 -->
+
+<div class="setup-step" id="setup3">
+
+<h1 class="setup-title">
+هل لديك ألم أو إصابة؟ 🩹
+</h1>
+
+<p class="setup-description">
+أخبرنا بشكل عام حتى نتجنب اقتراح تمارين للمنطقة التي تؤلمك.
+</p>
+
+<div class="option-grid">
+
+<div class="option" data-injury="لا يوجد" onclick="selectInjury(this)">
+<div class="option-icon">✅</div>
+<strong>لا يوجد</strong>
+</div>
+
+<div class="option" data-injury="الركبة" onclick="selectInjury(this)">
+<div class="option-icon">🦵</div>
+<strong>الركبة</strong>
+</div>
+
+<div class="option" data-injury="الظهر" onclick="selectInjury(this)">
+<div class="option-icon">🧍</div>
+<strong>الظهر</strong>
+</div>
+
+<div class="option" data-injury="الكتف" onclick="selectInjury(this)">
+<div class="option-icon">💪</div>
+<strong>الكتف</strong>
+</div>
+
+</div>
+
+<p style="font-size:12px;color:#7a8798">
+إذا كان لديك ألم أو إصابة، لا تتمرن على المنطقة المؤلمة وتحدث مع شخص بالغ أو مختص صحي مناسب.
+</p>
+
+<button class="primary" onclick="finishSetup()">
+إنشاء برنامجي
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     الصفحة الرئيسية
+========================= -->
+
+<div id="homeScreen">
+
 <header>
 
-<div class="header-content">
+<div class="header-inner">
 
-<div class="logo">MoveCare 🏠</div>
+<div>
+<div class="logo">MoveCare</div>
+<div class="header-sub">تمارينك المنزلية اليومية</div>
+</div>
 
-<p>تمارين منزلية بسيطة تساعدك على الحركة والنشاط</p>
+<div>💪</div>
 
 </div>
 
@@ -335,106 +734,223 @@ header p{
 
 <div class="container">
 
-<!-- الترحيب -->
+<div class="card hero">
 
-<div class="welcome">
+<h1>جاهز لتمرين اليوم؟ 🔥</h1>
 
-<h2>أهلاً بك 👋</h2>
-
-<p>
-اختر يومًا من الأسبوع وشاهد التمارين المقترحة لك.
+<p id="homeMessage">
+اختر يومًا من برنامجك وابدأ التمرين.
 </p>
 
-<button class="start-btn" onclick="scrollToDays()">
-ابدأ الآن
+<button class="primary" onclick="startTodayWorkout()">
+ابدأ تمرين اليوم
 </button>
 
 </div>
 
 
-<!-- الأيام -->
+<div class="card">
 
-<h2 class="section-title">📅 برنامج الأسبوع</h2>
+<h3>📊 تقدمك</h3>
 
-<div class="days" id="days"></div>
+<div class="stats">
+
+<div class="stat">
+<strong id="completedDays">0</strong>
+<span>أيام مكتملة</span>
+</div>
+
+<div class="stat">
+<strong id="totalWorkouts">0</strong>
+<span>تمارين</span>
+</div>
+
+<div class="stat">
+<strong id="streak">0</strong>
+<span>أيام متتالية</span>
+</div>
+
+</div>
+
+</div>
 
 
-<!-- التمرين -->
+<div class="card">
 
-<div class="workout">
+<h3>📅 برنامجك الأسبوعي</h3>
 
-<div class="workout-header">
+<div class="days" id="homeDays"></div>
 
-<h2 id="workoutTitle">تمرين اليوم</h2>
+</div>
 
-<span class="badge" id="workoutLevel">
-مبتدئ
+
+<div class="card">
+
+<h3>🏋️ تمارين اليوم</h3>
+
+<div id="homeExercises"></div>
+
+</div>
+
+
+<div class="card">
+
+<h3>⚙️ إعدادات البرنامج</h3>
+
+<button class="secondary" onclick="resetSettings()">
+إعادة إعداد البرنامج
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     شاشة التمرين
+========================= -->
+
+<div id="workoutScreen" class="workout-screen hidden">
+
+<div class="workout-top">
+
+<button class="back-btn" onclick="exitWorkout()">
+✕
+</button>
+
+<div class="session-info">
+
+<strong id="sessionExerciseCount">
+التمرين 1 من 5
+</strong>
+
+<span id="sessionDay">
+اليوم
 </span>
 
 </div>
 
-
-<!-- الشخصية -->
-
-<div class="character">
-
-<div class="character-icon">🧍</div>
-
-<p>الشخصية التوضيحية</p>
-
-<small>
-سنضيف لاحقًا حركات ثلاثية الأبعاد للتمارين
-</small>
+<div style="width:42px"></div>
 
 </div>
 
 
-<div id="exerciseList"></div>
+<div class="progress-container">
+
+<div class="progress-bg">
+
+<div class="progress-fill" id="sessionProgress"></div>
+
+</div>
 
 </div>
 
 
-<!-- التقدم -->
+<div class="model-card">
 
-<div class="progress-box">
+<div class="model-box">
 
-<h3>📊 تقدمك</h3>
+<div class="model-label">
+🧍 شرح الحركة ثلاثي الأبعاد
+</div>
 
-<p id="progressText">
-أنجزت 0 من 7 أيام
+<div id="threeContainer"></div>
+
+</div>
+
+</div>
+
+
+<div id="exerciseArea">
+
+<h1 class="exercise-title" id="currentExerciseName">
+القرفصاء
+</h1>
+
+<p class="exercise-description" id="currentExerciseDescription">
+انزل ببطء ثم عد إلى وضع الوقوف.
 </p>
 
-<div class="progress-bar">
-
-<div class="progress" id="progress"></div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- المؤقت -->
-
-<div class="timer" id="timer">
-
-<div class="timer-box">
-
-<h2 id="timerTitle">وقت التمرين</h2>
-
-<div class="timer-number" id="timerNumber">
+<div class="timer-number" id="exerciseTimer">
 30
 </div>
 
-<p>ثانية</p>
+<div class="timer-label">
+ثانية
+</div>
 
-<button onclick="stopTimer()">
-إيقاف
+<div class="session-buttons">
+
+<button class="skip" onclick="skipExercise()">
+تخطي ⏭
 </button>
 
-<button class="close-btn" onclick="closeTimer()">
-إغلاق
+<button class="pause" onclick="togglePause()" id="pauseButton">
+إيقاف مؤقت
+</button>
+
+</div>
+
+</div>
+
+
+<!-- الراحة -->
+
+<div id="restArea" class="rest-screen hidden">
+
+<div class="rest-icon">
+🧘
+</div>
+
+<h2>
+وقت الراحة
+</h2>
+
+<p>
+استعد للتمرين التالي
+</p>
+
+<div class="rest-number" id="restTimer">
+25
+</div>
+
+<button class="primary" onclick="skipRest()">
+تخطي الراحة ⏭
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     النهاية
+========================= -->
+
+<div id="finishScreen" class="finish hidden">
+
+<div class="finish-box">
+
+<div class="finish-icon">
+🎉
+</div>
+
+<h1>
+أحسنت!
+</h1>
+
+<p>
+لقد أكملت تمرين اليوم بنجاح.
+</p>
+
+<p>
+استمر على هذا الروتين وسترى تقدمك مع الوقت.
+</p>
+
+<button class="primary" onclick="closeFinish()">
+العودة للرئيسية
 </button>
 
 </div>
@@ -444,216 +960,632 @@ header p{
 
 <script>
 
-/* بيانات الأيام */
+/* ===================================
+   بيانات التطبيق
+=================================== */
 
-const workouts = [
+const exercises = {
+
+"الجسم كامل":[
 
 {
-day:"السبت",
-title:"تمرين الجسم كامل",
-level:"مبتدئ",
-exercises:[
-["المشي في المكان","30 ثانية"],
-["القرفصاء","10 مرات"],
-["الضغط على الحائط","10 مرات"],
-["تمدد الجسم","30 ثانية"]
-]
+name:"المشي في المكان",
+time:30,
+description:"امشِ في مكانك بحركة مريحة وارفع الركبتين بشكل معتدل.",
+type:"walk"
 },
 
 {
-day:"الأحد",
-title:"تمارين الرجلين",
-level:"مبتدئ",
-exercises:[
-["القرفصاء","10 مرات"],
-["رفع الساق","10 مرات"],
-["تمدد الرجلين","30 ثانية"]
-]
+name:"القرفصاء",
+time:30,
+description:"انزل بجسمك ببطء ثم عد إلى وضع الوقوف.",
+type:"squat"
 },
 
 {
-day:"الاثنين",
-title:"تمارين الظهر",
-level:"مبتدئ",
-exercises:[
-["تمدد الظهر","30 ثانية"],
-["وضعية الطفل","30 ثانية"],
-["تمدد جانبي","20 ثانية"]
-]
+name:"الضغط على الحائط",
+time:30,
+description:"ضع يديك على الحائط وادفع جسمك باتجاهه ثم عد.",
+type:"push"
 },
 
 {
-day:"الثلاثاء",
-title:"تمارين الصدر",
-level:"مبتدئ",
-exercises:[
-["الضغط على الحائط","10 مرات"],
-["ضغط الركبتين","8 مرات"],
-["تمدد الصدر","30 ثانية"]
-]
-},
-
-{
-day:"الأربعاء",
-title:"تمارين الذراعين",
-level:"مبتدئ",
-exercises:[
-["دوائر الذراعين","30 ثانية"],
-["رفع الذراعين","10 مرات"],
-["تمدد الذراع","20 ثانية"]
-]
-},
-
-{
-day:"الخميس",
-title:"تمارين البطن",
-level:"مبتدئ",
-exercises:[
-["بلانك خفيف","20 ثانية"],
-["رفع الركبتين","10 مرات"],
-["تمدد البطن","20 ثانية"]
-]
-},
-
-{
-day:"الجمعة",
-title:"راحة ونشاط خفيف",
-level:"راحة",
-exercises:[
-["المشي الخفيف","10 دقائق"],
-["تمدد الجسم","3 دقائق"],
-["التنفس والاسترخاء","2 دقيقة"]
-]
+name:"تمدد الجسم",
+time:30,
+description:"مد ذراعيك وساقيك بلطف وحافظ على حركة مريحة.",
+type:"stretch"
 }
 
-];
+],
 
+"الرجلين":[
 
-let completedDays =
-JSON.parse(localStorage.getItem("completedDays") || "[]");
+{
+name:"القرفصاء",
+time:30,
+description:"انزل ببطء ثم عد إلى الوقوف.",
+type:"squat"
+},
 
+{
+name:"رفع الساق",
+time:30,
+description:"ارفع ساقك بشكل متحكم ثم أعدها ببطء.",
+type:"leg"
+},
 
-/* إنشاء الأيام */
-
-const daysContainer =
-document.getElementById("days");
-
-workouts.forEach((workout,index)=>{
-
-const day=document.createElement("div");
-
-day.className="day";
-
-if(index===0){
-day.classList.add("active");
+{
+name:"تمدد الرجلين",
+time:30,
+description:"مد عضلات الرجلين بلطف دون إجبار الجسم.",
+type:"stretch"
 }
 
-day.innerHTML=`
-<div class="day-name">${workout.day}</div>
-<div class="day-number">${index+1}</div>
-`;
+],
 
-day.onclick=()=>selectDay(index);
+"الظهر":[
 
-daysContainer.appendChild(day);
+{
+name:"تمدد الظهر",
+time:30,
+description:"حافظ على حركة لطيفة ومريحة للظهر.",
+type:"stretch"
+},
 
-});
+{
+name:"وضعية الطفل",
+time:30,
+description:"مد جسمك للأمام بلطف وحافظ على التنفس الطبيعي.",
+type:"stretch"
+},
+
+{
+name:"تمدد جانبي",
+time:30,
+description:"مد جسمك إلى أحد الجانبين ثم بدّل الجهة.",
+type:"stretch"
+}
+
+],
+
+"الصدر":[
+
+{
+name:"الضغط على الحائط",
+time:30,
+description:"ادفع جسمك باتجاه الحائط ثم عد.",
+type:"push"
+},
+
+{
+name:"ضغط خفيف",
+time:30,
+description:"نفذ الحركة بطريقة مريحة ومسيطر عليها.",
+type:"push"
+},
+
+{
+name:"تمدد الصدر",
+time:30,
+description:"مد منطقة الصدر والكتفين بلطف.",
+type:"stretch"
+}
+
+],
+
+"الذراعين":[
+
+{
+name:"دوائر الذراعين",
+time:30,
+description:"حرك ذراعيك في دوائر صغيرة ومريحة.",
+type:"arms"
+},
+
+{
+name:"رفع الذراعين",
+time:30,
+description:"ارفع ذراعيك ثم أنزلهما ببطء.",
+type:"arms"
+},
+
+{
+name:"تمدد الذراع",
+time:30,
+description:"مد الذراع بلطف.",
+type:"stretch"
+}
+
+],
+
+"البطن":[
+
+{
+name:"بلانك خفيف",
+time:20,
+description:"حافظ على جسمك في وضع مستقيم بطريقة مريحة.",
+type:"plank"
+},
+
+{
+name:"رفع الركبتين",
+time:30,
+description:"ارفع الركبتين بالتناوب بحركة متحكم بها.",
+type:"walk"
+},
+
+{
+name:"تمدد البطن",
+time:30,
+description:"مد الجسم بلطف وحافظ على التنفس الطبيعي.",
+type:"stretch"
+}
+
+]
+
+};
 
 
-/* اختيار اليوم */
+/* ===================================
+   متغيرات الإعداد
+=================================== */
 
-function selectDay(index){
+let selectedGoal="";
+let selectedInjury="";
+let selectedDays=[];
 
-document.querySelectorAll(".day")
-.forEach(d=>d.classList.remove("active"));
 
-document.querySelectorAll(".day")[index]
+/* ===================================
+   اختيار الهدف
+=================================== */
+
+function selectGoal(element){
+
+document.querySelectorAll("[data-goal]")
+.forEach(x=>x.classList.remove("selected"));
+
+element.classList.add("selected");
+
+selectedGoal=element.dataset.goal;
+
+}
+
+
+/* ===================================
+   اختيار الإصابة
+=================================== */
+
+function selectInjury(element){
+
+document.querySelectorAll("[data-injury]")
+.forEach(x=>x.classList.remove("selected"));
+
+element.classList.add("selected");
+
+selectedInjury=element.dataset.injury;
+
+}
+
+
+/* ===================================
+   اختيار الأيام
+=================================== */
+
+function toggleSetupDay(element){
+
+const day=element.dataset.day;
+
+element.classList.toggle("selected");
+
+if(selectedDays.includes(day)){
+
+selectedDays=
+selectedDays.filter(x=>x!==day);
+
+}else{
+
+selectedDays.push(day);
+
+}
+
+}
+
+
+/* ===================================
+   التنقل في الإعداد
+=================================== */
+
+function nextSetup(number){
+
+if(number===2 && !selectedGoal){
+
+alert("اختر هدفك أولًا.");
+
+return;
+
+}
+
+if(number===3 && selectedDays.length===0){
+
+alert("اختر يومًا واحدًا على الأقل.");
+
+return;
+
+}
+
+document.querySelectorAll(".setup-step")
+.forEach(x=>x.classList.remove("active"));
+
+document.getElementById("setup"+number)
 .classList.add("active");
 
-const workout=workouts[index];
-
-document.getElementById("workoutTitle")
-.textContent=workout.title;
-
-document.getElementById("workoutLevel")
-.textContent=workout.level;
-
-const list=document.getElementById("exerciseList");
-
-list.innerHTML="";
+}
 
 
-workout.exercises.forEach(exercise=>{
+/* ===================================
+   إنهاء الإعداد
+=================================== */
+
+function finishSetup(){
+
+if(!selectedInjury){
+
+alert("اختر أحد الخيارات أولًا.");
+
+return;
+
+}
+
+const settings={
+
+goal:selectedGoal,
+days:selectedDays,
+injury:selectedInjury
+
+};
+
+localStorage.setItem(
+"moveCareSettings",
+JSON.stringify(settings)
+);
+
+localStorage.setItem(
+"moveCareCompleted",
+JSON.stringify([])
+);
+
+document.getElementById("setupScreen")
+.classList.add("hidden");
+
+loadHome();
+
+}
+
+
+/* ===================================
+   تحميل البرنامج
+=================================== */
+
+let settings=null;
+
+function loadSettings(){
+
+settings=
+JSON.parse(
+localStorage.getItem("moveCareSettings") || "null"
+);
+
+}
+
+
+/* ===================================
+   منع تمارين المنطقة المؤلمة
+=================================== */
+
+function getWorkoutForDay(){
+
+let available=[
+"الجسم كامل",
+"الرجلين",
+"الظهر",
+"الصدر",
+"الذراعين",
+"البطن"
+];
+
+let chosen="الجسم كامل";
+
+if(settings.injury==="الركبة"){
+chosen="الظهر";
+}
+
+if(settings.injury==="الظهر"){
+chosen="الذراعين";
+}
+
+if(settings.injury==="الكتف"){
+chosen="الرجلين";
+}
+
+return chosen;
+
+}
+
+
+/* ===================================
+   الرئيسية
+=================================== */
+
+function loadHome(){
+
+loadSettings();
+
+if(!settings){
+
+document.getElementById("setupScreen")
+.classList.remove("hidden");
+
+return;
+
+}
+
+const completed=
+JSON.parse(
+localStorage.getItem("moveCareCompleted") || "[]"
+);
+
+document.getElementById("completedDays")
+.textContent=completed.length;
+
+let total=0;
+
+completed.forEach(()=>{
+total+=3;
+});
+
+document.getElementById("totalWorkouts")
+.textContent=total;
+
+document.getElementById("streak")
+.textContent=completed.length;
+
+
+createHomeDays();
+
+showSelectedDay(
+settings.days[0] || "السبت"
+);
+
+}
+
+
+/* ===================================
+   أيام الرئيسية
+=================================== */
+
+function createHomeDays(){
+
+const container=
+document.getElementById("homeDays");
+
+container.innerHTML="";
+
+const days=[
+"السبت",
+"الأحد",
+"الاثنين",
+"الثلاثاء",
+"الأربعاء",
+"الخميس",
+"الجمعة"
+];
+
+days.forEach(day=>{
 
 const div=document.createElement("div");
 
-div.className="exercise";
+const selected=settings.days.includes(day);
+
+div.className=
+"day "+(selected?"selected":"disabled");
 
 div.innerHTML=`
 
-<div class="exercise-top">
+<div class="day-name">${day}</div>
 
-<h3>${exercise[0]}</h3>
+<div class="day-check">
+${selected?"✓":"—"}
+</div>
 
-<span class="exercise-info">
-${exercise[1]}
+`;
+
+div.onclick=()=>{
+
+if(selected){
+
+showSelectedDay(day);
+
+}
+
+};
+
+container.appendChild(div);
+
+});
+
+}
+
+
+/* ===================================
+   عرض تمارين اليوم
+=================================== */
+
+let currentDay="";
+
+function showSelectedDay(day){
+
+currentDay=day;
+
+const workoutType=getWorkoutForDay();
+
+const list=
+exercises[workoutType];
+
+const container=
+document.getElementById("homeExercises");
+
+container.innerHTML="";
+
+list.forEach((exercise,index)=>{
+
+const row=document.createElement("div");
+
+row.className="exercise-row";
+
+row.innerHTML=`
+
+<div class="exercise-number">
+${index+1}
+</div>
+
+<div class="exercise-info">
+
+<strong>${exercise.name}</strong>
+
+<span>
+${exercise.time} ثانية
 </span>
 
 </div>
 
-<button onclick="startTimer('${exercise[0]}')">
-▶ ابدأ التمرين
-</button>
-
 `;
 
-list.appendChild(div);
+container.appendChild(row);
 
 });
+
+document.getElementById("homeMessage")
+.textContent=
+`${day}: ${workoutType}`;
 
 }
 
 
-/* التمرين الأول */
+/* ===================================
+   بدء تمرين اليوم
+=================================== */
 
-selectDay(0);
+function startTodayWorkout(){
 
+if(!settings.days.length){
 
-/* المؤقت */
+alert("اختر أيام التمرين أولًا.");
 
-let timerInterval;
+return;
 
-let timerSeconds=30;
+}
 
+startWorkout(currentDay);
 
-function startTimer(name){
-
-document.getElementById("timerTitle")
-.textContent=name;
-
-timerSeconds=30;
-
-document.getElementById("timerNumber")
-.textContent=timerSeconds;
-
-document.getElementById("timer")
-.style.display="flex";
+}
 
 
-clearInterval(timerInterval);
+/* ===================================
+   جلسة التمرين
+=================================== */
 
-timerInterval=setInterval(()=>{
+let currentExercises=[];
+let currentExerciseIndex=0;
+let timer=null;
+let seconds=30;
+let paused=false;
+let restMode=false;
 
-timerSeconds--;
 
-document.getElementById("timerNumber")
-.textContent=timerSeconds;
+function startWorkout(day){
 
-if(timerSeconds<=0){
+const type=getWorkoutForDay();
 
-clearInterval(timerInterval);
+currentExercises=
+exercises[type];
 
-alert("أحسنت! انتهى وقت التمرين 🎉");
+currentExerciseIndex=0;
+
+document.getElementById("homeScreen")
+.classList.add("hidden");
+
+document.getElementById("workoutScreen")
+.classList.remove("hidden");
+
+document.getElementById("sessionDay")
+.textContent=day;
+
+showCurrentExercise();
+
+}
+
+
+/* ===================================
+   عرض التمرين
+=================================== */
+
+function showCurrentExercise(){
+
+clearInterval(timer);
+
+restMode=false;
+
+document.getElementById("restArea")
+.classList.add("hidden");
+
+document.getElementById("exerciseArea")
+.classList.remove("hidden");
+
+const exercise=
+currentExercises[currentExerciseIndex];
+
+document.getElementById("currentExerciseName")
+.textContent=exercise.name;
+
+document.getElementById("currentExerciseDescription")
+.textContent=exercise.description;
+
+document.getElementById("exerciseTimer")
+.textContent=exercise.time;
+
+document.getElementById("sessionExerciseCount")
+.textContent=
+`التمرين ${currentExerciseIndex+1} من ${currentExercises.length}`;
+
+const progress=
+(currentExerciseIndex/currentExercises.length)*100;
+
+document.getElementById("sessionProgress")
+.style.width=progress+"%";
+
+paused=false;
+
+document.getElementById("pauseButton")
+.textContent="إيقاف مؤقت";
+
+start3DAnimation(exercise.type);
+
+seconds=exercise.time;
+
+timer=setInterval(()=>{
+
+if(paused)return;
+
+seconds--;
+
+document.getElementById("exerciseTimer")
+.textContent=seconds;
+
+if(seconds<=0){
+
+clearInterval(timer);
+
+startRest();
 
 }
 
@@ -662,53 +1594,663 @@ alert("أحسنت! انتهى وقت التمرين 🎉");
 }
 
 
-function stopTimer(){
+/* ===================================
+   الراحة 25 ثانية
+=================================== */
 
-clearInterval(timerInterval);
+function startRest(){
+
+restMode=true;
+
+document.getElementById("exerciseArea")
+.classList.add("hidden");
+
+document.getElementById("restArea")
+.classList.remove("hidden");
+
+let restSeconds=25;
+
+document.getElementById("restTimer")
+.textContent=restSeconds;
+
+clearInterval(timer);
+
+timer=setInterval(()=>{
+
+if(paused)return;
+
+restSeconds--;
+
+document.getElementById("restTimer")
+.textContent=restSeconds;
+
+if(restSeconds<=0){
+
+clearInterval(timer);
+
+nextExercise();
+
+}
+
+},1000);
 
 }
 
 
-function closeTimer(){
+/* ===================================
+   التالي
+=================================== */
 
-clearInterval(timerInterval);
+function nextExercise(){
 
-document.getElementById("timer")
-.style.display="none";
+currentExerciseIndex++;
+
+if(currentExerciseIndex>=currentExercises.length){
+
+finishWorkout();
+
+return;
+
+}
+
+showCurrentExercise();
 
 }
 
 
-/* التقدم */
+/* ===================================
+   تخطي
+=================================== */
 
-function updateProgress(){
+function skipExercise(){
 
-const count=completedDays.length;
+clearInterval(timer);
 
-document.getElementById("progressText")
-.textContent=`أنجزت ${count} من 7 أيام`;
+if(restMode){
 
-document.getElementById("progress")
-.style.width=(count/7*100)+"%";
+nextExercise();
+
+}else{
+
+startRest();
+
+}
 
 }
 
 
-updateProgress();
+/* ===================================
+   تخطي الراحة
+=================================== */
+
+function skipRest(){
+
+clearInterval(timer);
+
+nextExercise();
+
+}
 
 
-/* التمرير */
+/* ===================================
+   إيقاف مؤقت
+=================================== */
 
-function scrollToDays(){
+function togglePause(){
 
-document.getElementById("days")
-.scrollIntoView({
-behavior:"smooth"
+paused=!paused;
+
+document.getElementById("pauseButton")
+.textContent=
+paused?"استئناف":"إيقاف مؤقت";
+
+}
+
+
+/* ===================================
+   الخروج
+=================================== */
+
+function exitWorkout(){
+
+clearInterval(timer);
+
+document.getElementById("workoutScreen")
+.classList.add("hidden");
+
+document.getElementById("homeScreen")
+.classList.remove("hidden");
+
+}
+
+
+/* ===================================
+   إنهاء التمرين
+=================================== */
+
+function finishWorkout(){
+
+clearInterval(timer);
+
+const completed=
+JSON.parse(
+localStorage.getItem("moveCareCompleted") || "[]"
+);
+
+if(!completed.includes(currentDay)){
+
+completed.push(currentDay);
+
+localStorage.setItem(
+"moveCareCompleted",
+JSON.stringify(completed)
+);
+
+}
+
+document.getElementById("finishScreen")
+.classList.remove("hidden");
+
+}
+
+
+/* ===================================
+   إغلاق شاشة النهاية
+=================================== */
+
+function closeFinish(){
+
+document.getElementById("finishScreen")
+.classList.add("hidden");
+
+document.getElementById("workoutScreen")
+.classList.add("hidden");
+
+document.getElementById("homeScreen")
+.classList.remove("hidden");
+
+loadHome();
+
+}
+
+
+/* ===================================
+   إعادة الإعداد
+=================================== */
+
+function resetSettings(){
+
+if(confirm("هل تريد إعادة إعداد برنامج MoveCare؟")){
+
+localStorage.removeItem("moveCareSettings");
+
+localStorage.removeItem("moveCareCompleted");
+
+location.reload();
+
+}
+
+}
+
+
+/* ===================================
+   THREE.JS
+   شخصية ثلاثية الأبعاد
+=================================== */
+
+let scene;
+let camera;
+let renderer;
+
+let human;
+
+let animationType="idle";
+
+let animationTime=0;
+
+
+/* إنشاء الشخصية */
+
+function createHuman(){
+
+human=new THREE.Group();
+
+scene.add(human);
+
+
+/* الرأس */
+
+const headGeometry=
+new THREE.SphereGeometry(0.25,24,24);
+
+const headMaterial=
+new THREE.MeshStandardMaterial({
+color:0xffc7a8
 });
 
+const head=
+new THREE.Mesh(
+headGeometry,
+headMaterial
+);
+
+head.position.y=2.7;
+
+human.add(head);
+
+
+/* الجسم */
+
+const bodyGeometry=
+new THREE.CapsuleGeometry
+?new THREE.CapsuleGeometry(.35,1.0,8,16)
+:null;
+
+
+/*
+إذا لم تكن CapsuleGeometry موجودة
+نستخدم أسطوانة.
+*/
+
+let body;
+
+if(bodyGeometry){
+
+body=
+new THREE.Mesh(
+bodyGeometry,
+new THREE.MeshStandardMaterial({
+color:0x1677ff
+})
+);
+
+}else{
+
+body=
+new THREE.Mesh(
+new THREE.CylinderGeometry(.35,.4,1.2,16),
+new THREE.MeshStandardMaterial({
+color:0x1677ff
+})
+);
+
 }
+
+body.position.y=1.8;
+
+human.add(body);
+
+
+/* الأطراف */
+
+function limb(length=.9){
+
+return new THREE.Mesh(
+
+new THREE.CylinderGeometry(
+.12,
+.12,
+length,
+12
+),
+
+new THREE.MeshStandardMaterial({
+color:0x1677ff
+})
+
+);
+
+}
+
+
+/* الذراعان */
+
+human.leftArm=limb();
+
+human.rightArm=limb();
+
+human.leftArm.position.set(-.55,2.05,0);
+
+human.rightArm.position.set(.55,2.05,0);
+
+human.leftArm.rotation.z=-.35;
+
+human.rightArm.rotation.z=.35;
+
+human.add(human.leftArm);
+
+human.add(human.rightArm);
+
+
+/* الساقان */
+
+human.leftLeg=limb(1.1);
+
+human.rightLeg=limb(1.1);
+
+human.leftLeg.position.set(-.22,.75,0);
+
+human.rightLeg.position.set(.22,.75,0);
+
+human.add(human.leftLeg);
+
+human.add(human.rightLeg);
+
+
+/* الأرض */
+
+const floor=
+new THREE.Mesh(
+
+new THREE.CircleGeometry(2.2,40),
+
+new THREE.MeshStandardMaterial({
+color:0xe4edf8
+})
+
+);
+
+floor.rotation.x=-Math.PI/2;
+
+floor.position.y=.05;
+
+human.add(floor);
+
+}
+
+
+/* ===================================
+   إعداد THREE
+=================================== */
+
+function setup3D(){
+
+const container=
+document.getElementById("threeContainer");
+
+scene=new THREE.Scene();
+
+scene.background=
+new THREE.Color(0xf0f6ff);
+
+camera=
+new THREE.PerspectiveCamera(
+45,
+container.clientWidth/container.clientHeight,
+.1,
+100
+);
+
+camera.position.set(0,2.3,6);
+
+camera.lookAt(0,1.5,0);
+
+
+renderer=
+new THREE.WebGLRenderer({
+antialias:true,
+alpha:true
+});
+
+renderer.setPixelRatio(
+Math.min(window.devicePixelRatio,2)
+);
+
+renderer.setSize(
+container.clientWidth,
+container.clientHeight
+);
+
+container.appendChild(renderer.domElement);
+
+
+/* الإضاءة */
+
+const light=
+new THREE.HemisphereLight(
+0xffffff,
+0xb8c9df,
+1.5
+);
+
+scene.add(light);
+
+
+const directional=
+new THREE.DirectionalLight(
+0xffffff,
+1.3
+);
+
+directional.position.set(3,5,4);
+
+scene.add(directional);
+
+
+createHuman();
+
+animate3D();
+
+}
+
+
+/* ===================================
+   تحريك الشخصية
+=================================== */
+
+function animate3D(){
+
+requestAnimationFrame(animate3D);
+
+if(human){
+
+animationTime+=.045;
+
+const t=animationTime;
+
+
+/* دوران خفيف */
+
+human.rotation.y=
+Math.sin(t*.5)*.08;
+
+
+/* القرفصاء */
+
+if(animationType==="squat"){
+
+const squat=
+(Math.sin(t*2)+1)/2;
+
+human.position.y=
+-squat*.45;
+
+human.leftLeg.rotation.x=
+-squat*.45;
+
+human.rightLeg.rotation.x=
+-squat*.45;
+
+human.leftArm.rotation.z=
+-.35-squat*.3;
+
+human.rightArm.rotation.z=
+.35+squat*.3;
+
+}
+
+
+/* المشي */
+
+else if(animationType==="walk"){
+
+human.position.y=
+Math.abs(Math.sin(t*3))*.12;
+
+human.leftLeg.rotation.x=
+Math.sin(t*3)*.5;
+
+human.rightLeg.rotation.x=
+-Math.sin(t*3)*.5;
+
+human.leftArm.rotation.x=
+-Math.sin(t*3)*.35;
+
+human.rightArm.rotation.x=
+Math.sin(t*3)*.35;
+
+}
+
+
+/* الضغط */
+
+else if(animationType==="push"){
+
+const push=
+(Math.sin(t*2)+1)/2;
+
+human.rotation.x=
+push*.45;
+
+human.position.y=
+push*.15;
+
+}
+
+
+/* الذراعان */
+
+else if(animationType==="arms"){
+
+human.leftArm.rotation.x=
+Math.sin(t*2)*.8;
+
+human.rightArm.rotation.x=
+-Math.sin(t*2)*.8;
+
+}
+
+
+/* التمدد */
+
+else if(animationType==="stretch"){
+
+human.rotation.z=
+Math.sin(t)*.18;
+
+human.leftArm.rotation.z=
+-.9+Math.sin(t)*.1;
+
+human.rightArm.rotation.z=
+.9-Math.sin(t)*.1;
+
+}
+
+
+/* البلانك */
+
+else if(animationType==="plank"){
+
+human.rotation.z=-1.1;
+
+human.position.y=.7;
+
+}
+
+
+/* الساق */
+
+else if(animationType==="leg"){
+
+human.leftLeg.rotation.x=
+Math.sin(t*2)*.6;
+
+}
+
+
+/* الوضع الطبيعي */
+
+else{
+
+human.position.y=0;
+
+human.rotation.x=0;
+
+human.rotation.z=0;
+
+}
+
+}
+
+renderer.render(scene,camera);
+
+}
+
+
+/* ===================================
+   تغيير حركة 3D
+=================================== */
+
+function start3DAnimation(type){
+
+animationType=type;
+
+animationTime=0;
+
+}
+
+
+/* ===================================
+   بدء التطبيق
+=================================== */
+
+window.addEventListener("load",()=>{
+
+loadSettings();
+
+if(!settings){
+
+document.getElementById("setupScreen")
+.classList.remove("hidden");
+
+}else{
+
+document.getElementById("setupScreen")
+.classList.add("hidden");
+
+loadHome();
+
+}
+
+setup3D();
+
+});
+
+
+/* ===================================
+   تغيير حجم الشاشة
+=================================== */
+
+window.addEventListener("resize",()=>{
+
+if(!renderer)return;
+
+const container=
+document.getElementById("threeContainer");
+
+camera.aspect=
+container.clientWidth/container.clientHeight;
+
+camera.updateProjectionMatrix();
+
+renderer.setSize(
+container.clientWidth,
+container.clientHeight
+);
+
+});
 
 </script>
 
 </body>
-     </html>
+  </html>
