@@ -1,297 +1,714 @@
-     <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MoveCare - تمارينك اليومية</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+<title>MoveCare | تمارين منزلية</title>
 
-    body {
-      margin: 0;
-      background: #f4f7f8;
-      color: #222;
-    }
+<style>
 
-    header {
-      background: #1677ff;
-      color: white;
-      text-align: center;
-      padding: 35px 15px;
-      border-radius: 0 0 25px 25px;
-    }
+*{
+  box-sizing:border-box;
+  font-family:Arial,Tahoma,sans-serif;
+}
 
-    header h1 {
-      margin: 0 0 10px;
-      font-size: 34px;
-    }
+body{
+  margin:0;
+  background:#f4f8ff;
+  color:#172033;
+  overflow-x:hidden;
+}
 
-    header p {
-      margin: 0;
-      font-size: 17px;
-    }
+/* زخارف الخلفية */
 
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 25px 15px;
-    }
+body::before{
+  content:"";
+  position:fixed;
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  background:#dceaff;
+  top:-100px;
+  right:-80px;
+  z-index:-1;
+}
 
-    .start {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+body::after{
+  content:"";
+  position:fixed;
+  width:220px;
+  height:220px;
+  border-radius:50%;
+  background:#e8f7ef;
+  bottom:-90px;
+  left:-70px;
+  z-index:-1;
+}
 
-    .start button {
-      background: #1677ff;
-      color: white;
-      border: none;
-      padding: 14px 30px;
-      border-radius: 12px;
-      font-size: 18px;
-      cursor: pointer;
-    }
+/* الرأس */
 
-    h2 {
-      text-align: center;
-      margin-top: 25px;
-    }
+header{
+  background:linear-gradient(135deg,#1677ff,#49a0ff);
+  color:white;
+  padding:28px 18px;
+  border-radius:0 0 30px 30px;
+  box-shadow:0 5px 20px #b9d5ff;
+}
 
-    .categories {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
-    }
+.header-content{
+  max-width:900px;
+  margin:auto;
+}
 
-    .category {
-      background: white;
-      padding: 25px 15px;
-      border-radius: 18px;
-      text-align: center;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-      cursor: pointer;
-      transition: 0.2s;
-    }
+.logo{
+  font-size:30px;
+  font-weight:bold;
+}
 
-    .category:hover {
-      transform: translateY(-3px);
-    }
+header p{
+  margin:8px 0 0;
+  opacity:.9;
+}
 
-    .icon {
-      font-size: 42px;
-      margin-bottom: 10px;
-    }
+/* المحتوى */
 
-    .category h3 {
-      margin: 5px 0;
-    }
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px 15px 40px;
+}
 
-    .category p {
-      color: #666;
-      margin: 5px 0;
-    }
+/* الترحيب */
 
-    #exercises {
-      display: none;
-      margin-top: 30px;
-    }
+.welcome{
+  background:white;
+  border-radius:22px;
+  padding:22px;
+  margin-top:5px;
+  box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
 
-    .exercise {
-      background: white;
-      margin: 15px 0;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
-    }
+.welcome h2{
+  margin-top:0;
+}
 
-    .exercise h3 {
-      margin-top: 0;
-      color: #1677ff;
-    }
+.start-btn{
+  background:#1677ff;
+  color:white;
+  border:0;
+  padding:13px 25px;
+  border-radius:13px;
+  font-size:17px;
+  cursor:pointer;
+}
 
-    .exercise button {
-      background: #1677ff;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
+/* الأيام */
 
-    footer {
-      text-align: center;
-      padding: 30px 10px;
-      color: #777;
-    }
-  </style>
+.section-title{
+  margin-top:28px;
+}
+
+.days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:8px;
+}
+
+.day{
+  background:white;
+  border:2px solid transparent;
+  border-radius:14px;
+  padding:12px 4px;
+  text-align:center;
+  cursor:pointer;
+  box-shadow:0 3px 10px rgba(0,0,0,.05);
+}
+
+.day:hover{
+  border-color:#1677ff;
+}
+
+.day.active{
+  background:#1677ff;
+  color:white;
+}
+
+.day-name{
+  font-size:13px;
+}
+
+.day-number{
+  font-size:20px;
+  font-weight:bold;
+  margin-top:5px;
+}
+
+/* منطقة التمرين */
+
+.workout{
+  margin-top:25px;
+  background:white;
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
+
+.workout-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.workout-header h2{
+  margin:0;
+}
+
+.badge{
+  background:#e7f0ff;
+  color:#1677ff;
+  padding:7px 12px;
+  border-radius:20px;
+  font-size:13px;
+}
+
+/* الشخصية */
+
+.character{
+  margin:20px 0;
+  min-height:180px;
+  background:linear-gradient(135deg,#eef6ff,#f7fbff);
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  border:1px solid #e0ecff;
+}
+
+.character-icon{
+  font-size:80px;
+}
+
+.character p{
+  margin:5px 0;
+  color:#65748b;
+}
+
+/* التمارين */
+
+.exercise{
+  border:1px solid #e5eaf2;
+  border-radius:17px;
+  padding:16px;
+  margin-top:12px;
+}
+
+.exercise-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.exercise h3{
+  margin:0;
+}
+
+.exercise-info{
+  color:#68778c;
+  font-size:14px;
+}
+
+.exercise button{
+  width:100%;
+  margin-top:12px;
+  border:0;
+  background:#1677ff;
+  color:white;
+  padding:11px;
+  border-radius:11px;
+  cursor:pointer;
+  font-size:15px;
+}
+
+/* التقدم */
+
+.progress-box{
+  margin-top:25px;
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
+
+.progress-bar{
+  height:12px;
+  background:#e7edf5;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress{
+  width:0%;
+  height:100%;
+  background:#1677ff;
+  transition:.4s;
+}
+
+/* المؤقت */
+
+.timer{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(10,20,40,.75);
+  z-index:10;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.timer-box{
+  background:white;
+  width:100%;
+  max-width:380px;
+  border-radius:25px;
+  padding:30px;
+  text-align:center;
+}
+
+.timer-number{
+  font-size:70px;
+  font-weight:bold;
+  color:#1677ff;
+  margin:15px;
+}
+
+.timer-box button{
+  border:0;
+  background:#1677ff;
+  color:white;
+  padding:12px 25px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.close-btn{
+  background:#e9eef5 !important;
+  color:#172033 !important;
+  margin-top:10px;
+}
+
+/* الهاتف */
+
+@media(max-width:600px){
+
+  .days{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .logo{
+    font-size:26px;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>MoveCare</h1>
-  <p>تحرك أكثر، عِش أفضل 💪</p>
-</header>
 
-<div class="container">
+<div class="header-content">
 
-  <div class="start">
-    <h2>ابدأ الآن</h2>
-    <p>اختر المنطقة التي تريد تمرينها</p>
-  </div>
+<div class="logo">MoveCare 🏠</div>
 
-  <div class="categories">
-
-    <div class="category" onclick="showExercises('legs')">
-      <div class="icon">🦵</div>
-      <h3>الرجل</h3>
-      <p>تمارين للساقين</p>
-    </div>
-
-    <div class="category" onclick="showExercises('back')">
-      <div class="icon">🏃</div>
-      <h3>الظهر</h3>
-      <p>تمارين للظهر</p>
-    </div>
-
-    <div class="category" onclick="showExercises('chest')">
-      <div class="icon">💪</div>
-      <h3>الصدر</h3>
-      <p>تمارين للصدر</p>
-    </div>
-
-    <div class="category" onclick="showExercises('arms')">
-      <div class="icon">💪</div>
-      <h3>الذراعان</h3>
-      <p>تمارين للذراعين</p>
-    </div>
-
-    <div class="category" onclick="showExercises('abs')">
-      <div class="icon">🔥</div>
-      <h3>البطن</h3>
-      <p>تمارين للبطن</p>
-    </div>
-
-    <div class="category" onclick="showExercises('full')">
-      <div class="icon">🏋️</div>
-      <h3>الجسم كامل</h3>
-      <p>تمارين متنوعة</p>
-    </div>
-
-  </div>
-
-  <div id="exercises">
-    <h2 id="exerciseTitle"></h2>
-    <div id="exerciseList"></div>
-  </div>
+<p>تمارين منزلية بسيطة تساعدك على الحركة والنشاط</p>
 
 </div>
 
-<footer>
-  © 2026 MoveCare
-</footer>
+</header>
+
+
+<div class="container">
+
+<!-- الترحيب -->
+
+<div class="welcome">
+
+<h2>أهلاً بك 👋</h2>
+
+<p>
+اختر يومًا من الأسبوع وشاهد التمارين المقترحة لك.
+</p>
+
+<button class="start-btn" onclick="scrollToDays()">
+ابدأ الآن
+</button>
+
+</div>
+
+
+<!-- الأيام -->
+
+<h2 class="section-title">📅 برنامج الأسبوع</h2>
+
+<div class="days" id="days"></div>
+
+
+<!-- التمرين -->
+
+<div class="workout">
+
+<div class="workout-header">
+
+<h2 id="workoutTitle">تمرين اليوم</h2>
+
+<span class="badge" id="workoutLevel">
+مبتدئ
+</span>
+
+</div>
+
+
+<!-- الشخصية -->
+
+<div class="character">
+
+<div class="character-icon">🧍</div>
+
+<p>الشخصية التوضيحية</p>
+
+<small>
+سنضيف لاحقًا حركات ثلاثية الأبعاد للتمارين
+</small>
+
+</div>
+
+
+<div id="exerciseList"></div>
+
+</div>
+
+
+<!-- التقدم -->
+
+<div class="progress-box">
+
+<h3>📊 تقدمك</h3>
+
+<p id="progressText">
+أنجزت 0 من 7 أيام
+</p>
+
+<div class="progress-bar">
+
+<div class="progress" id="progress"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- المؤقت -->
+
+<div class="timer" id="timer">
+
+<div class="timer-box">
+
+<h2 id="timerTitle">وقت التمرين</h2>
+
+<div class="timer-number" id="timerNumber">
+30
+</div>
+
+<p>ثانية</p>
+
+<button onclick="stopTimer()">
+إيقاف
+</button>
+
+<button class="close-btn" onclick="closeTimer()">
+إغلاق
+</button>
+
+</div>
+
+</div>
+
 
 <script>
 
-const data = {
+/* بيانات الأيام */
 
-  legs: {
-    title: "تمارين الرجل 🦵",
-    exercises: [
-      ["القرفصاء", "قف بشكل مستقيم ثم انزل بجسمك ببطء واصعد مجددًا."],
-      ["الاندفاع", "خذ خطوة إلى الأمام ثم انزل بجسمك وارجع إلى وضع البداية."],
-      ["رفع الساق", "ارفع ساقك بشكل مستقيم ثم أعدها ببطء."]
-    ]
-  },
+const workouts = [
 
-  back: {
-    title: "تمارين الظهر 🏃",
-    exercises: [
-      ["تمدد الظهر", "اجلس أو استلقِ بشكل مريح ومدد ظهرك بلطف."],
-      ["وضعية الطفل", "اجلس على ركبتيك ومد ذراعيك إلى الأمام بلطف."],
-      ["تمدد جانبي", "مد جسمك إلى أحد الجانبين ثم بدّل الجهة."]
-    ]
-  },
+{
+day:"السبت",
+title:"تمرين الجسم كامل",
+level:"مبتدئ",
+exercises:[
+["المشي في المكان","30 ثانية"],
+["القرفصاء","10 مرات"],
+["الضغط على الحائط","10 مرات"],
+["تمدد الجسم","30 ثانية"]
+]
+},
 
-  chest: {
-    title: "تمارين الصدر 💪",
-    exercises: [
-      ["تمرين الضغط", "ضع يديك على الأرض وادفع جسمك للأعلى ثم انزل ببطء."],
-      ["ضغط على الحائط", "ضع يديك على الحائط وادفع جسمك نحوه ثم ابتعد."],
-      ["ضغط الركبتين", "نفذ تمرين الضغط مع إبقاء الركبتين على الأرض."]
-    ]
-  },
+{
+day:"الأحد",
+title:"تمارين الرجلين",
+level:"مبتدئ",
+exercises:[
+["القرفصاء","10 مرات"],
+["رفع الساق","10 مرات"],
+["تمدد الرجلين","30 ثانية"]
+]
+},
 
-  arms: {
-    title: "تمارين الذراعين 💪",
-    exercises: [
-      ["دوائر الذراعين", "مد ذراعيك وقم بحركات دائرية صغيرة."],
-      ["تمدد الذراع", "مد ذراعك أمامك واسحبه بلطف باليد الأخرى."],
-      ["رفع الذراعين", "ارفع ذراعيك إلى الأعلى ثم أعدهما ببطء."]
-    ]
-  },
+{
+day:"الاثنين",
+title:"تمارين الظهر",
+level:"مبتدئ",
+exercises:[
+["تمدد الظهر","30 ثانية"],
+["وضعية الطفل","30 ثانية"],
+["تمدد جانبي","20 ثانية"]
+]
+},
 
-  abs: {
-    title: "تمارين البطن 🔥",
-    exercises: [
-      ["بلانك", "ثبت جسمك في وضع مستقيم مع الاعتماد على الساعدين والقدمين."],
-      ["رفع الركبتين", "ارفع ركبتيك باتجاه جسمك بشكل متحكم."],
-      ["تمرين الدراجة", "حرّك ساقيك بالتناوب بحركة تشبه ركوب الدراجة."]
-    ]
-  },
+{
+day:"الثلاثاء",
+title:"تمارين الصدر",
+level:"مبتدئ",
+exercises:[
+["الضغط على الحائط","10 مرات"],
+["ضغط الركبتين","8 مرات"],
+["تمدد الصدر","30 ثانية"]
+]
+},
 
-  full: {
-    title: "تمارين الجسم كامل 🏋️",
-    exercises: [
-      ["القرفصاء", "انزل بجسمك ببطء ثم عد إلى وضع الوقوف."],
-      ["الضغط", "نفذ تمرين الضغط بطريقة مريحة وآمنة."],
-      ["المشي في المكان", "امشِ في مكانك وارفع ركبتيك بشكل معتدل."],
-      ["تمدد الجسم", "مد ذراعيك وساقيك بلطف لتحريك الجسم."]
-    ]
-  }
+{
+day:"الأربعاء",
+title:"تمارين الذراعين",
+level:"مبتدئ",
+exercises:[
+["دوائر الذراعين","30 ثانية"],
+["رفع الذراعين","10 مرات"],
+["تمدد الذراع","20 ثانية"]
+]
+},
 
-};
+{
+day:"الخميس",
+title:"تمارين البطن",
+level:"مبتدئ",
+exercises:[
+["بلانك خفيف","20 ثانية"],
+["رفع الركبتين","10 مرات"],
+["تمدد البطن","20 ثانية"]
+]
+},
 
-function showExercises(type) {
+{
+day:"الجمعة",
+title:"راحة ونشاط خفيف",
+level:"راحة",
+exercises:[
+["المشي الخفيف","10 دقائق"],
+["تمدد الجسم","3 دقائق"],
+["التنفس والاسترخاء","2 دقيقة"]
+]
+}
 
-  const section = document.getElementById("exercises");
-  const title = document.getElementById("exerciseTitle");
-  const list = document.getElementById("exerciseList");
+];
 
-  title.textContent = data[type].title;
-  list.innerHTML = "";
 
-  data[type].exercises.forEach((exercise) => {
+let completedDays =
+JSON.parse(localStorage.getItem("completedDays") || "[]");
 
-    const div = document.createElement("div");
-    div.className = "exercise";
 
-    div.innerHTML = `
-      <h3>${exercise[0]}</h3>
-      <p>${exercise[1]}</p>
-      <button onclick="alert('ابدأ ببطء وتوقف إذا شعرت بالألم.')">
-        ابدأ التمرين
-      </button>
-    `;
+/* إنشاء الأيام */
 
-    list.appendChild(div);
+const daysContainer =
+document.getElementById("days");
 
-  });
+workouts.forEach((workout,index)=>{
 
-  section.style.display = "block";
+const day=document.createElement("div");
 
-  section.scrollIntoView({
-    behavior: "smooth"
-  });
+day.className="day";
+
+if(index===0){
+day.classList.add("active");
+}
+
+day.innerHTML=`
+<div class="day-name">${workout.day}</div>
+<div class="day-number">${index+1}</div>
+`;
+
+day.onclick=()=>selectDay(index);
+
+daysContainer.appendChild(day);
+
+});
+
+
+/* اختيار اليوم */
+
+function selectDay(index){
+
+document.querySelectorAll(".day")
+.forEach(d=>d.classList.remove("active"));
+
+document.querySelectorAll(".day")[index]
+.classList.add("active");
+
+const workout=workouts[index];
+
+document.getElementById("workoutTitle")
+.textContent=workout.title;
+
+document.getElementById("workoutLevel")
+.textContent=workout.level;
+
+const list=document.getElementById("exerciseList");
+
+list.innerHTML="";
+
+
+workout.exercises.forEach(exercise=>{
+
+const div=document.createElement("div");
+
+div.className="exercise";
+
+div.innerHTML=`
+
+<div class="exercise-top">
+
+<h3>${exercise[0]}</h3>
+
+<span class="exercise-info">
+${exercise[1]}
+</span>
+
+</div>
+
+<button onclick="startTimer('${exercise[0]}')">
+▶ ابدأ التمرين
+</button>
+
+`;
+
+list.appendChild(div);
+
+});
+
+}
+
+
+/* التمرين الأول */
+
+selectDay(0);
+
+
+/* المؤقت */
+
+let timerInterval;
+
+let timerSeconds=30;
+
+
+function startTimer(name){
+
+document.getElementById("timerTitle")
+.textContent=name;
+
+timerSeconds=30;
+
+document.getElementById("timerNumber")
+.textContent=timerSeconds;
+
+document.getElementById("timer")
+.style.display="flex";
+
+
+clearInterval(timerInterval);
+
+timerInterval=setInterval(()=>{
+
+timerSeconds--;
+
+document.getElementById("timerNumber")
+.textContent=timerSeconds;
+
+if(timerSeconds<=0){
+
+clearInterval(timerInterval);
+
+alert("أحسنت! انتهى وقت التمرين 🎉");
+
+}
+
+},1000);
+
+}
+
+
+function stopTimer(){
+
+clearInterval(timerInterval);
+
+}
+
+
+function closeTimer(){
+
+clearInterval(timerInterval);
+
+document.getElementById("timer")
+.style.display="none";
+
+}
+
+
+/* التقدم */
+
+function updateProgress(){
+
+const count=completedDays.length;
+
+document.getElementById("progressText")
+.textContent=`أنجزت ${count} من 7 أيام`;
+
+document.getElementById("progress")
+.style.width=(count/7*100)+"%";
+
+}
+
+
+updateProgress();
+
+
+/* التمرير */
+
+function scrollToDays(){
+
+document.getElementById("days")
+.scrollIntoView({
+behavior:"smooth"
+});
+
 }
 
 </script>
 
 </body>
-</html>
-      
+     </html>
