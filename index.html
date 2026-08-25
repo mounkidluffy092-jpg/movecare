@@ -1,2256 +1,1868 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MoveCare - تمارين منزلية</title>
+  <title>MoveCare - تمارينك المنزلية</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- التصميم -->
+  <link rel="stylesheet" href="style.css">
 
-<style>
-
-*{
-  box-sizing:border-box;
-  font-family:Arial,Tahoma,sans-serif;
-}
-
-body{
-  margin:0;
-  background:#f4f7fb;
-  color:#172033;
-}
-
-button{
-  font-family:inherit;
-  cursor:pointer;
-}
-
-.hidden{
-  display:none!important;
-}
-
-/* =========================
-   الخلفية
-========================= */
-
-.background-circle{
-  position:fixed;
-  border-radius:50%;
-  z-index:-1;
-  opacity:.7;
-}
-
-.circle1{
-  width:260px;
-  height:260px;
-  background:#dceaff;
-  top:-100px;
-  right:-90px;
-}
-
-.circle2{
-  width:220px;
-  height:220px;
-  background:#dff6e9;
-  bottom:-100px;
-  left:-80px;
-}
-
-/* =========================
-   الهيدر
-========================= */
-
-header{
-  background:linear-gradient(135deg,#1477ff,#4da2ff);
-  color:white;
-  padding:22px 18px;
-  border-radius:0 0 30px 30px;
-  box-shadow:0 5px 25px rgba(22,119,255,.25);
-}
-
-.header-inner{
-  max-width:900px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.logo{
-  font-size:27px;
-  font-weight:bold;
-}
-
-.header-sub{
-  margin-top:6px;
-  font-size:14px;
-  opacity:.9;
-}
-
-/* =========================
-   المحتوى
-========================= */
-
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:18px 15px 50px;
-}
-
-.card{
-  background:white;
-  border-radius:22px;
-  padding:20px;
-  margin-bottom:18px;
-  box-shadow:0 5px 20px rgba(20,40,80,.07);
-}
-
-.primary{
-  width:100%;
-  border:0;
-  background:#1677ff;
-  color:white;
-  padding:14px;
-  border-radius:13px;
-  font-size:17px;
-}
-
-.secondary{
-  width:100%;
-  border:0;
-  background:#edf2f8;
-  color:#172033;
-  padding:13px;
-  border-radius:13px;
-  font-size:16px;
-}
-
-/* =========================
-   الصفحة الرئيسية
-========================= */
-
-.hero{
-  padding:25px 20px;
-}
-
-.hero h1{
-  margin:0 0 8px;
-  font-size:27px;
-}
-
-.hero p{
-  color:#64748b;
-  line-height:1.7;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-.stat{
-  background:#f5f8fd;
-  border-radius:15px;
-  text-align:center;
-  padding:15px 5px;
-}
-
-.stat strong{
-  display:block;
-  font-size:22px;
-  color:#1677ff;
-}
-
-.stat span{
-  font-size:12px;
-  color:#68778c;
-}
-
-/* =========================
-   الأيام
-========================= */
-
-.days{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:7px;
-}
-
-.day{
-  border:2px solid transparent;
-  background:#f5f8fd;
-  border-radius:13px;
-  padding:10px 3px;
-  text-align:center;
-}
-
-.day.selected{
-  background:#1677ff;
-  color:white;
-  border-color:#1677ff;
-}
-
-.day.disabled{
-  opacity:.45;
-}
-
-.day-name{
-  font-size:12px;
-}
-
-.day-check{
-  font-size:18px;
-  margin-top:5px;
-}
-
-/* =========================
-   التمارين
-========================= */
-
-.exercise-row{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:13px 0;
-  border-bottom:1px solid #edf0f4;
-}
-
-.exercise-number{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  background:#e9f2ff;
-  color:#1677ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  flex-shrink:0;
-}
-
-.exercise-info{
-  flex:1;
-}
-
-.exercise-info strong{
-  display:block;
-}
-
-.exercise-info span{
-  font-size:12px;
-  color:#748197;
-}
-
-/* =========================
-   شاشة الإعداد
-========================= */
-
-.setup-screen{
-  position:fixed;
-  inset:0;
-  background:#f4f7fb;
-  z-index:100;
-  overflow-y:auto;
-}
-
-.setup-box{
-  max-width:600px;
-  margin:auto;
-  padding:30px 18px 50px;
-}
-
-.setup-logo{
-  text-align:center;
-  font-size:34px;
-  font-weight:bold;
-  color:#1677ff;
-  margin:15px 0;
-}
-
-.setup-step{
-  display:none;
-}
-
-.setup-step.active{
-  display:block;
-}
-
-.setup-title{
-  font-size:25px;
-  margin-bottom:8px;
-}
-
-.setup-description{
-  color:#68778c;
-  line-height:1.6;
-}
-
-.option-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin:20px 0;
-}
-
-.option{
-  background:white;
-  border:2px solid #e5eaf1;
-  border-radius:17px;
-  padding:18px 10px;
-  text-align:center;
-}
-
-.option.selected{
-  border-color:#1677ff;
-  background:#eef5ff;
-}
-
-.option-icon{
-  font-size:30px;
-}
-
-.option strong{
-  display:block;
-  margin-top:8px;
-}
-
-.day-options{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:9px;
-  margin:20px 0;
-}
-
-.day-option{
-  background:white;
-  border:2px solid #e4e9f0;
-  border-radius:14px;
-  padding:14px;
-  text-align:center;
-}
-
-.day-option.selected{
-  background:#1677ff;
-  color:white;
-  border-color:#1677ff;
-}
-
-/* =========================
-   شاشة التمرين
-========================= */
-
-.workout-screen{
-  position:fixed;
-  inset:0;
-  background:#f4f7fb;
-  z-index:90;
-  overflow-y:auto;
-}
-
-.workout-top{
-  max-width:700px;
-  margin:auto;
-  padding:15px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.back-btn{
-  border:0;
-  background:white;
-  width:42px;
-  height:42px;
-  border-radius:12px;
-  font-size:20px;
-}
-
-.session-info{
-  text-align:center;
-}
-
-.session-info strong{
-  display:block;
-}
-
-.session-info span{
-  font-size:12px;
-  color:#738096;
-}
-
-.progress-container{
-  max-width:700px;
-  margin:auto;
-  padding:0 15px;
-}
-
-.progress-bg{
-  height:7px;
-  background:#dfe6ef;
-  border-radius:20px;
-  overflow:hidden;
-}
-
-.progress-fill{
-  height:100%;
-  width:0%;
-  background:#1677ff;
-  transition:.3s;
-}
-
-/* =========================
-   منطقة 3D
-========================= */
-
-.model-card{
-  max-width:700px;
-  margin:15px auto;
-  padding:0 15px;
-}
-
-.model-box{
-  height:330px;
-  background:linear-gradient(145deg,#eaf3ff,#f8fbff);
-  border-radius:25px;
-  overflow:hidden;
-  position:relative;
-  border:1px solid #dce8f7;
-}
-
-#threeContainer{
-  width:100%;
-  height:100%;
-}
-
-.model-label{
-  position:absolute;
-  top:15px;
-  right:15px;
-  background:rgba(255,255,255,.9);
-  padding:8px 12px;
-  border-radius:20px;
-  font-size:12px;
-  z-index:2;
-}
-
-/* =========================
-   معلومات التمرين
-========================= */
-
-.exercise-title{
-  text-align:center;
-  font-size:27px;
-  margin:15px 0 5px;
-}
-
-.exercise-description{
-  text-align:center;
-  color:#68778c;
-  line-height:1.6;
-  margin:0 auto;
-  max-width:500px;
-}
-
-.timer-number{
-  text-align:center;
-  font-size:68px;
-  font-weight:bold;
-  color:#1677ff;
-  margin:8px 0;
-}
-
-.timer-label{
-  text-align:center;
-  color:#748197;
-}
-
-.session-buttons{
-  max-width:500px;
-  margin:15px auto 30px;
-  padding:0 15px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.skip{
-  background:#edf2f8;
-  color:#172033;
-  border:0;
-  border-radius:13px;
-  padding:14px;
-  font-size:16px;
-}
-
-.pause{
-  background:#1677ff;
-  color:white;
-  border:0;
-  border-radius:13px;
-  padding:14px;
-  font-size:16px;
-}
-
-.rest-screen{
-  text-align:center;
-  padding:25px 15px;
-}
-
-.rest-icon{
-  font-size:65px;
-}
-
-.rest-screen h2{
-  font-size:28px;
-}
-
-.rest-number{
-  font-size:75px;
-  font-weight:bold;
-  color:#1677ff;
-}
-
-/* =========================
-   شاشة النهاية
-========================= */
-
-.finish{
-  position:fixed;
-  inset:0;
-  background:#f4f7fb;
-  z-index:120;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.finish-box{
-  background:white;
-  max-width:450px;
-  width:100%;
-  border-radius:25px;
-  padding:30px 20px;
-  text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,.1);
-}
-
-.finish-icon{
-  font-size:70px;
-}
-
-.finish-box h1{
-  margin-bottom:8px;
-}
-
-@media(max-width:600px){
-
-  .days{
-    grid-template-columns:repeat(4,1fr);
-  }
-
-  .stats{
-    grid-template-columns:repeat(3,1fr);
-  }
-
-  .model-box{
-    height:290px;
-  }
-
-}
-
-</style>
+  <!-- مكتبة Three.js للشخصية ثلاثية الأبعاد -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 </head>
 
 <body>
 
-<div class="background-circle circle1"></div>
-<div class="background-circle circle2"></div>
+  <!-- زخارف الخلفية -->
+  <div class="background-decoration decoration-one"></div>
+  <div class="background-decoration decoration-two"></div>
 
 
-<!-- =========================
-     إعداد التطبيق لأول مرة
-========================= -->
+  <!-- =========================================
+       شاشة الإعداد الأولي
+  ========================================== -->
 
-<div id="setupScreen" class="setup-screen">
+  <section id="setupScreen" class="setup-screen">
 
-<div class="setup-box">
+    <div class="setup-box">
 
-<div class="setup-logo">
-MoveCare 🏠
-</div>
+      <div class="setup-logo">
+        MoveCare
+      </div>
 
 
-<!-- الخطوة 1 -->
+      <!-- الخطوة 1 -->
 
-<div class="setup-step active" id="setup1">
+      <div id="setupStep1" class="setup-step active">
 
-<h1 class="setup-title">
-لنبدأ معًا 👋
-</h1>
+        <h1 class="setup-title">
+          أهلاً بك في MoveCare 👋
+        </h1>
 
-<p class="setup-description">
-سنقوم بإعداد برنامج مناسب لك. لن يستغرق الأمر سوى دقيقة.
-</p>
+        <p class="setup-description">
+          سنطرح عليك بعض الأسئلة حتى نساعدك على إنشاء برنامج
+          تمارين منزلي مناسب لمستواك.
+        </p>
 
-<h3>ما هدفك؟</h3>
+        <div class="card">
 
-<div class="option-grid">
+          <h3>
+            ما هدفك؟
+          </h3>
 
-<div class="option" data-goal="نشاط ولياقة" onclick="selectGoal(this)">
-<div class="option-icon">🏃</div>
-<strong>النشاط واللياقة</strong>
-</div>
+          <div class="option-grid">
 
-<div class="option" data-goal="القوة" onclick="selectGoal(this)">
-<div class="option-icon">💪</div>
-<strong>تطوير القوة</strong>
-</div>
+            <button
+              class="option"
+              data-goal="نشاط ولياقة"
+              onclick="selectOption(this, 'goal')">
 
-<div class="option" data-goal="مرونة" onclick="selectGoal(this)">
-<div class="option-icon">🧘</div>
-<strong>المرونة</strong>
-</div>
+              <div class="option-icon">🏃</div>
 
-<div class="option" data-goal="روتين منزلي" onclick="selectGoal(this)">
-<div class="option-icon">🏠</div>
-<strong>روتين منزلي</strong>
-</div>
+              <strong>
+                نشاط ولياقة
+              </strong>
 
-</div>
+            </button>
 
-<button class="primary" onclick="nextSetup(2)">
-التالي
-</button>
 
-</div>
+            <button
+              class="option"
+              data-goal="القوة"
+              onclick="selectOption(this, 'goal')">
 
+              <div class="option-icon">💪</div>
 
-<!-- الخطوة 2 -->
+              <strong>
+                القوة
+              </strong>
 
-<div class="setup-step" id="setup2">
+            </button>
 
-<h1 class="setup-title">
-ما الأيام التي تريد التمرين فيها؟ 📅
-</h1>
 
-<p class="setup-description">
-اختر الأيام التي تناسبك. يمكنك اختيار أكثر من يوم.
-</p>
+            <button
+              class="option"
+              data-goal="مرونة"
+              onclick="selectOption(this, 'goal')">
 
-<div class="day-options">
+              <div class="option-icon">🧘</div>
 
-<div class="day-option" data-day="السبت" onclick="toggleSetupDay(this)">السبت</div>
-<div class="day-option" data-day="الأحد" onclick="toggleSetupDay(this)">الأحد</div>
-<div class="day-option" data-day="الاثنين" onclick="toggleSetupDay(this)">الاثنين</div>
-<div class="day-option" data-day="الثلاثاء" onclick="toggleSetupDay(this)">الثلاثاء</div>
-<div class="day-option" data-day="الأربعاء" onclick="toggleSetupDay(this)">الأربعاء</div>
-<div class="day-option" data-day="الخميس" onclick="toggleSetupDay(this)">الخميس</div>
-<div class="day-option" data-day="الجمعة" onclick="toggleSetupDay(this)">الجمعة</div>
+              <strong>
+                المرونة
+              </strong>
 
-</div>
+            </button>
 
-<button class="primary" onclick="nextSetup(3)">
-التالي
-</button>
 
-</div>
+            <button
+              class="option"
+              data-goal="عام"
+              onclick="selectOption(this, 'goal')">
 
+              <div class="option-icon">🔥</div>
 
-<!-- الخطوة 3 -->
+              <strong>
+                برنامج عام
+              </strong>
 
-<div class="setup-step" id="setup3">
+            </button>
 
-<h1 class="setup-title">
-هل لديك ألم أو إصابة؟ 🩹
-</h1>
+          </div>
 
-<p class="setup-description">
-أخبرنا بشكل عام حتى نتجنب اقتراح تمارين للمنطقة التي تؤلمك.
-</p>
+        </div>
 
-<div class="option-grid">
 
-<div class="option" data-injury="لا يوجد" onclick="selectInjury(this)">
-<div class="option-icon">✅</div>
-<strong>لا يوجد</strong>
-</div>
+        <button
+          class="primary-button"
+          onclick="nextSetupStep(2)">
 
-<div class="option" data-injury="الركبة" onclick="selectInjury(this)">
-<div class="option-icon">🦵</div>
-<strong>الركبة</strong>
-</div>
+          التالي
 
-<div class="option" data-injury="الظهر" onclick="selectInjury(this)">
-<div class="option-icon">🧍</div>
-<strong>الظهر</strong>
-</div>
+        </button>
 
-<div class="option" data-injury="الكتف" onclick="selectInjury(this)">
-<div class="option-icon">💪</div>
-<strong>الكتف</strong>
-</div>
+      </div>
 
-</div>
 
-<p style="font-size:12px;color:#7a8798">
-إذا كان لديك ألم أو إصابة، لا تتمرن على المنطقة المؤلمة وتحدث مع شخص بالغ أو مختص صحي مناسب.
-</p>
 
-<button class="primary" onclick="finishSetup()">
-إنشاء برنامجي
-</button>
+      <!-- الخطوة 2 -->
 
-</div>
+      <div id="setupStep2" class="setup-step">
 
-</div>
+        <h1 class="setup-title">
+          كم يومًا تريد التمرين؟
+        </h1>
 
-</div>
+        <p class="setup-description">
+          اختر الأيام التي تناسبك.
+        </p>
 
 
-<!-- =========================
-     الصفحة الرئيسية
-========================= -->
+        <div class="card">
 
-<div id="homeScreen">
+          <div class="day-options">
 
-<header>
+            <button
+              class="day-option"
+              data-day="السبت"
+              onclick="toggleSetupDay(this)">
+              السبت
+            </button>
 
-<div class="header-inner">
+            <button
+              class="day-option"
+              data-day="الأحد"
+              onclick="toggleSetupDay(this)">
+              الأحد
+            </button>
 
-<div>
-<div class="logo">MoveCare</div>
-<div class="header-sub">تمارينك المنزلية اليومية</div>
-</div>
+            <button
+              class="day-option"
+              data-day="الاثنين"
+              onclick="toggleSetupDay(this)">
+              الاثنين
+            </button>
 
-<div>💪</div>
+            <button
+              class="day-option"
+              data-day="الثلاثاء"
+              onclick="toggleSetupDay(this)">
+              الثلاثاء
+            </button>
 
-</div>
+            <button
+              class="day-option"
+              data-day="الأربعاء"
+              onclick="toggleSetupDay(this)">
+              الأربعاء
+            </button>
 
-</header>
+            <button
+              class="day-option"
+              data-day="الخميس"
+              onclick="toggleSetupDay(this)">
+              الخميس
+            </button>
 
+            <button
+              class="day-option"
+              data-day="الجمعة"
+              onclick="toggleSetupDay(this)">
+              الجمعة
+            </button>
 
-<div class="container">
+          </div>
 
-<div class="card hero">
+        </div>
 
-<h1>جاهز لتمرين اليوم؟ 🔥</h1>
 
-<p id="homeMessage">
-اختر يومًا من برنامجك وابدأ التمرين.
-</p>
+        <button
+          class="primary-button"
+          onclick="nextSetupStep(3)">
 
-<button class="primary" onclick="startTodayWorkout()">
-ابدأ تمرين اليوم
-</button>
+          التالي
 
-</div>
+        </button>
 
+      </div>
 
-<div class="card">
 
-<h3>📊 تقدمك</h3>
 
-<div class="stats">
+      <!-- الخطوة 3 -->
 
-<div class="stat">
-<strong id="completedDays">0</strong>
-<span>أيام مكتملة</span>
-</div>
+      <div id="setupStep3" class="setup-step">
 
-<div class="stat">
-<strong id="totalWorkouts">0</strong>
-<span>تمارين</span>
-</div>
+        <h1 class="setup-title">
+          ما مستوى قدرتك؟
+        </h1>
 
-<div class="stat">
-<strong id="streak">0</strong>
-<span>أيام متتالية</span>
-</div>
+        <p class="setup-description">
+          اختر المستوى الذي يناسب خبرتك الحالية.
+        </p>
 
-</div>
 
-</div>
+        <div class="option-grid">
 
+          <button
+            class="option"
+            data-level="مبتدئ"
+            onclick="selectOption(this, 'level')">
 
-<div class="card">
+            <div class="option-icon">🌱</div>
 
-<h3>📅 برنامجك الأسبوعي</h3>
+            <strong>
+              مبتدئ
+            </strong>
 
-<div class="days" id="homeDays"></div>
+          </button>
 
-</div>
 
+          <button
+            class="option"
+            data-level="متوسط"
+            onclick="selectOption(this, 'level')">
 
-<div class="card">
+            <div class="option-icon">🔥</div>
 
-<h3>🏋️ تمارين اليوم</h3>
+            <strong>
+              متوسط
+            </strong>
 
-<div id="homeExercises"></div>
+          </button>
 
-</div>
 
+          <button
+            class="option"
+            data-level="متقدم"
+            onclick="selectOption(this, 'level')">
 
-<div class="card">
+            <div class="option-icon">🏆</div>
 
-<h3>⚙️ إعدادات البرنامج</h3>
+            <strong>
+              متقدم
+            </strong>
 
-<button class="secondary" onclick="resetSettings()">
-إعادة إعداد البرنامج
-</button>
+          </button>
 
-</div>
+        </div>
 
-</div>
 
-</div>
+        <button
+          class="primary-button"
+          onclick="nextSetupStep(4)">
 
+          التالي
 
-<!-- =========================
-     شاشة التمرين
-========================= -->
+        </button>
 
-<div id="workoutScreen" class="workout-screen hidden">
+      </div>
 
-<div class="workout-top">
 
-<button class="back-btn" onclick="exitWorkout()">
-✕
-</button>
 
-<div class="session-info">
+      <!-- الخطوة 4 -->
 
-<strong id="sessionExerciseCount">
-التمرين 1 من 5
-</strong>
+      <div id="setupStep4" class="setup-step">
 
-<span id="sessionDay">
-اليوم
-</span>
+        <h1 class="setup-title">
+          هل لديك منطقة تسبب لك الألم؟
+        </h1>
 
-</div>
+        <p class="setup-description">
+          هذا السؤال يساعدنا على تجنب بعض الحركات.
+          MoveCare لا يشخّص الإصابات.
+        </p>
 
-<div style="width:42px"></div>
 
-</div>
+        <div class="option-grid">
 
+          <button
+            class="option"
+            data-pain="لا يوجد"
+            onclick="selectOption(this, 'painArea')">
 
-<div class="progress-container">
+            <div class="option-icon">✅</div>
 
-<div class="progress-bg">
+            <strong>
+              لا يوجد
+            </strong>
 
-<div class="progress-fill" id="sessionProgress"></div>
+          </button>
 
-</div>
 
-</div>
+          <button
+            class="option"
+            data-pain="الظهر"
+            onclick="selectOption(this, 'painArea')">
 
+            <div class="option-icon">🧍</div>
 
-<div class="model-card">
+            <strong>
+              الظهر
+            </strong>
 
-<div class="model-box">
+          </button>
 
-<div class="model-label">
-🧍 شرح الحركة ثلاثي الأبعاد
-</div>
 
-<div id="threeContainer"></div>
+          <button
+            class="option"
+            data-pain="الركبة"
+            onclick="selectOption(this, 'painArea')">
 
-</div>
+            <div class="option-icon">🦵</div>
 
-</div>
+            <strong>
+              الركبة
+            </strong>
 
+          </button>
 
-<div id="exerciseArea">
 
-<h1 class="exercise-title" id="currentExerciseName">
-القرفصاء
-</h1>
+          <button
+            class="option"
+            data-pain="الكتف"
+            onclick="selectOption(this, 'painArea')">
 
-<p class="exercise-description" id="currentExerciseDescription">
-انزل ببطء ثم عد إلى وضع الوقوف.
-</p>
+            <div class="option-icon">💪</div>
 
-<div class="timer-number" id="exerciseTimer">
-30
-</div>
+            <strong>
+              الكتف
+            </strong>
 
-<div class="timer-label">
-ثانية
-</div>
+          </button>
 
-<div class="session-buttons">
+        </div>
 
-<button class="skip" onclick="skipExercise()">
-تخطي ⏭
-</button>
 
-<button class="pause" onclick="togglePause()" id="pauseButton">
-إيقاف مؤقت
-</button>
+        <div class="input-group">
 
-</div>
+          <label>
+            أين تحديدًا؟
+          </label>
 
-</div>
+          <input
+            id="painDetails"
+            type="text"
+            placeholder="مثال: أسفل الظهر">
 
+        </div>
 
-<!-- الراحة -->
 
-<div id="restArea" class="rest-screen hidden">
+        <div class="warning">
 
-<div class="rest-icon">
-🧘
-</div>
+          إذا كانت لديك إصابة أو ألم مستمر،
+          لا تعتمد على التطبيق لتشخيص حالتك.
+          أخبر أحد والديك/ولي أمرك واستشر مختصًا صحيًا.
 
-<h2>
-وقت الراحة
-</h2>
+        </div>
 
-<p>
-استعد للتمرين التالي
-</p>
 
-<div class="rest-number" id="restTimer">
-25
-</div>
+        <button
+          class="primary-button"
+          onclick="nextSetupStep(5)">
 
-<button class="primary" onclick="skipRest()">
-تخطي الراحة ⏭
-</button>
+          التالي
 
-</div>
+        </button>
 
-</div>
+      </div>
 
 
-<!-- =========================
-     النهاية
-========================= -->
 
-<div id="finishScreen" class="finish hidden">
+      <!-- الخطوة 5 -->
 
-<div class="finish-box">
+      <div id="setupStep5" class="setup-step">
 
-<div class="finish-icon">
-🎉
-</div>
+        <h1 class="setup-title">
+          معلومات إضافية
+        </h1>
 
-<h1>
-أحسنت!
-</h1>
+        <p class="setup-description">
+          هذه المعلومات اختيارية وتساعد في تخصيص البرنامج.
+        </p>
 
-<p>
-لقد أكملت تمرين اليوم بنجاح.
-</p>
 
-<p>
-استمر على هذا الروتين وسترى تقدمك مع الوقت.
-</p>
+        <div class="card">
 
-<button class="primary" onclick="closeFinish()">
-العودة للرئيسية
-</button>
+          <div class="input-group">
 
-</div>
+            <label>
+              الطول بالسنتيمتر
+            </label>
 
-</div>
+            <input
+              id="userHeight"
+              type="number"
+              min="1"
+              placeholder="مثال: 160">
 
+          </div>
 
-<script>
 
-/* ===================================
-   بيانات التطبيق
-=================================== */
+          <div class="input-group">
 
-const exercises = {
+            <label>
+              الوزن بالكيلوغرام
+            </label>
 
-"الجسم كامل":[
+            <input
+              id="userWeight"
+              type="number"
+              min="1"
+              placeholder="مثال: 50">
 
-{
-name:"المشي في المكان",
-time:30,
-description:"امشِ في مكانك بحركة مريحة وارفع الركبتين بشكل معتدل.",
-type:"walk"
-},
+          </div>
 
-{
-name:"القرفصاء",
-time:30,
-description:"انزل بجسمك ببطء ثم عد إلى وضع الوقوف.",
-type:"squat"
-},
+        </div>
 
-{
-name:"الضغط على الحائط",
-time:30,
-description:"ضع يديك على الحائط وادفع جسمك باتجاهه ثم عد.",
-type:"push"
-},
 
-{
-name:"تمدد الجسم",
-time:30,
-description:"مد ذراعيك وساقيك بلطف وحافظ على حركة مريحة.",
-type:"stretch"
-}
+        <p class="setup-description">
+          لن نستخدم هذه المعلومات للحكم على شكل الجسم أو
+          لتحديد ما إذا كنت تستطيع ممارسة تمرين معين.
+        </p>
 
-],
 
-"الرجلين":[
+        <button
+          class="primary-button"
+          onclick="finishSetup()">
 
-{
-name:"القرفصاء",
-time:30,
-description:"انزل ببطء ثم عد إلى الوقوف.",
-type:"squat"
-},
+          إنشاء برنامجي 🚀
 
-{
-name:"رفع الساق",
-time:30,
-description:"ارفع ساقك بشكل متحكم ثم أعدها ببطء.",
-type:"leg"
-},
+        </button>
 
-{
-name:"تمدد الرجلين",
-time:30,
-description:"مد عضلات الرجلين بلطف دون إجبار الجسم.",
-type:"stretch"
-}
+      </div>
 
-],
+    </div>
 
-"الظهر":[
+  </section>
 
-{
-name:"تمدد الظهر",
-time:30,
-description:"حافظ على حركة لطيفة ومريحة للظهر.",
-type:"stretch"
-},
 
-{
-name:"وضعية الطفل",
-time:30,
-description:"مد جسمك للأمام بلطف وحافظ على التنفس الطبيعي.",
-type:"stretch"
-},
 
-{
-name:"تمدد جانبي",
-time:30,
-description:"مد جسمك إلى أحد الجانبين ثم بدّل الجهة.",
-type:"stretch"
-}
+  <!-- =========================================
+       الصفحة الرئيسية
+  ========================================== -->
 
-],
+  <section id="homeScreen" class="hidden">
 
-"الصدر":[
+    <header>
 
-{
-name:"الضغط على الحائط",
-time:30,
-description:"ادفع جسمك باتجاه الحائط ثم عد.",
-type:"push"
-},
+      <div class="header-inner">
 
-{
-name:"ضغط خفيف",
-time:30,
-description:"نفذ الحركة بطريقة مريحة ومسيطر عليها.",
-type:"push"
-},
+        <div>
 
-{
-name:"تمدد الصدر",
-time:30,
-description:"مد منطقة الصدر والكتفين بلطف.",
-type:"stretch"
-}
+          <div class="logo">
+            MoveCare
+          </div>
 
-],
+          <div class="header-subtitle">
+            تمارينك المنزلية بطريقة ذكية
+          </div>
 
-"الذراعين":[
+        </div>
 
-{
-name:"دوائر الذراعين",
-time:30,
-description:"حرك ذراعيك في دوائر صغيرة ومريحة.",
-type:"arms"
-},
+        <div>
+          🏃
+        </div>
 
-{
-name:"رفع الذراعين",
-time:30,
-description:"ارفع ذراعيك ثم أنزلهما ببطء.",
-type:"arms"
-},
+      </div>
 
-{
-name:"تمدد الذراع",
-time:30,
-description:"مد الذراع بلطف.",
-type:"stretch"
-}
+    </header>
 
-],
 
-"البطن":[
+    <main class="container">
 
-{
-name:"بلانك خفيف",
-time:20,
-description:"حافظ على جسمك في وضع مستقيم بطريقة مريحة.",
-type:"plank"
-},
+      <div class="card hero">
 
-{
-name:"رفع الركبتين",
-time:30,
-description:"ارفع الركبتين بالتناوب بحركة متحكم بها.",
-type:"walk"
-},
+        <h1>
+          جاهز للتمرين؟ 💪
+        </h1>
 
-{
-name:"تمدد البطن",
-time:30,
-description:"مد الجسم بلطف وحافظ على التنفس الطبيعي.",
-type:"stretch"
-}
+        <p>
+          اختر يومك وابدأ جلسة التمرين الخاصة بك.
+        </p>
 
-]
+        <button
+          class="primary-button"
+          onclick="startWorkoutSession(AppState.selectedDay)">
 
-};
+          ابدأ التمرين
 
+        </button>
 
-/* ===================================
-   متغيرات الإعداد
-=================================== */
+      </div>
 
-let selectedGoal="";
-let selectedInjury="";
-let selectedDays=[];
 
+      <!-- الإحصائيات -->
 
-/* ===================================
-   اختيار الهدف
-=================================== */
+      <div class="card">
 
-function selectGoal(element){
+        <h3>
+          تقدمك
+        </h3>
 
-document.querySelectorAll("[data-goal]")
-.forEach(x=>x.classList.remove("selected"));
+        <div class="stats">
 
-element.classList.add("selected");
+          <div class="stat">
 
-selectedGoal=element.dataset.goal;
+            <strong id="completedDays">
+              0
+            </strong>
 
-}
+            <span>
+              أيام مكتملة
+            </span>
 
+          </div>
 
-/* ===================================
-   اختيار الإصابة
-=================================== */
 
-function selectInjury(element){
+          <div class="stat">
 
-document.querySelectorAll("[data-injury]")
-.forEach(x=>x.classList.remove("selected"));
+            <strong id="totalWorkouts">
+              0
+            </strong>
 
-element.classList.add("selected");
+            <span>
+              تمارين
+            </span>
 
-selectedInjury=element.dataset.injury;
+          </div>
 
-}
 
+          <div class="stat">
 
-/* ===================================
-   اختيار الأيام
-=================================== */
+            <strong id="streak">
+              0
+            </strong>
 
-function toggleSetupDay(element){
+            <span>
+              أيام متتالية
+            </span>
 
-const day=element.dataset.day;
+          </div>
 
-element.classList.toggle("selected");
+        </div>
 
-if(selectedDays.includes(day)){
+      </div>
 
-selectedDays=
-selectedDays.filter(x=>x!==day);
 
-}else{
+      <!-- الأيام -->
 
-selectedDays.push(day);
+      <div class="card">
 
-}
+        <h3>
+          أيام التمرين
+        </h3>
 
-}
+        <div
+          id="daysContainer"
+          class="days">
 
+        </div>
 
-/* ===================================
-   التنقل في الإعداد
-=================================== */
+      </div>
 
-function nextSetup(number){
 
-if(number===2 && !selectedGoal){
+      <!-- تمارين اليوم -->
 
-alert("اختر هدفك أولًا.");
+      <div class="card">
 
-return;
+        <h3>
+          تمارين اليوم
+        </h3>
 
-}
+        <div
+          id="homeExercises"
+          class="exercise-list">
 
-if(number===3 && selectedDays.length===0){
+        </div>
 
-alert("اختر يومًا واحدًا على الأقل.");
+      </div>
 
-return;
 
-}
+      <div class="card">
 
-document.querySelectorAll(".setup-step")
-.forEach(x=>x.classList.remove("active"));
+        <button
+          class="secondary-button"
+          onclick="resetMoveCare()">
 
-document.getElementById("setup"+number)
-.classList.add("active");
+          إعادة إعداد MoveCare
 
-}
+        </button>
 
+      </div>
 
-/* ===================================
-   إنهاء الإعداد
-=================================== */
+    </main>
 
-function finishSetup(){
+  </section>
 
-if(!selectedInjury){
 
-alert("اختر أحد الخيارات أولًا.");
 
-return;
+  <!-- =========================================
+       شاشة التمرين
+  ========================================== -->
 
-}
+  <section
+    id="workoutScreen"
+    class="workout-screen hidden">
 
-const settings={
 
-goal:selectedGoal,
-days:selectedDays,
-injury:selectedInjury
+    <div class="workout-top">
 
-};
+      <button
+        class="back-button"
+        onclick="exitWorkoutSession()">
 
-localStorage.setItem(
-"moveCareSettings",
-JSON.stringify(settings)
-);
+        ←
 
-localStorage.setItem(
-"moveCareCompleted",
-JSON.stringify([])
-);
+      </button>
 
-document.getElementById("setupScreen")
-.classList.add("hidden");
 
-loadHome();
+      <div class="session-info">
 
-}
+        <strong>
+          MoveCare
+        </strong>
 
+        <span id="sessionDay">
+        </span>
 
-/* ===================================
-   تحميل البرنامج
-=================================== */
+      </div>
 
-let settings=null;
 
-function loadSettings(){
+      <div id="sessionExerciseCount">
+        1 / 6
+      </div>
 
-settings=
-JSON.parse(
-localStorage.getItem("moveCareSettings") || "null"
-);
+    </div>
 
-}
 
+    <!-- التقدم -->
 
-/* ===================================
-   منع تمارين المنطقة المؤلمة
-=================================== */
+    <div class="progress-container">
 
-function getWorkoutForDay(){
+      <div class="progress-background">
 
-let available=[
-"الجسم كامل",
-"الرجلين",
-"الظهر",
-"الصدر",
-"الذراعين",
-"البطن"
-];
+        <div
+          id="sessionProgress"
+          class="progress-fill">
 
-let chosen="الجسم كامل";
+        </div>
 
-if(settings.injury==="الركبة"){
-chosen="الظهر";
-}
+      </div>
 
-if(settings.injury==="الظهر"){
-chosen="الذراعين";
-}
+    </div>
 
-if(settings.injury==="الكتف"){
-chosen="الرجلين";
-}
 
-return chosen;
 
-}
+    <!-- الشخصية -->
 
+    <div class="model-card">
 
-/* ===================================
-   الرئيسية
-=================================== */
+      <div class="model-box">
 
-function loadHome(){
+        <div
+          id="threeContainer">
 
-loadSettings();
+        </div>
 
-if(!settings){
+        <div class="model-label">
+          الحركة التوضيحية
+        </div>
 
-document.getElementById("setupScreen")
-.classList.remove("hidden");
+      </div>
 
-return;
+    </div>
 
-}
 
-const completed=
-JSON.parse(
-localStorage.getItem("moveCareCompleted") || "[]"
-);
 
-document.getElementById("completedDays")
-.textContent=completed.length;
+    <!-- منطقة التمرين -->
 
-let total=0;
+    <div
+      id="exerciseArea"
+      class="exercise-area">
 
-completed.forEach(()=>{
-total+=3;
-});
 
-document.getElementById("totalWorkouts")
-.textContent=total;
+      <h1
+        id="currentExerciseName"
+        class="exercise-title">
 
-document.getElementById("streak")
-.textContent=completed.length;
+        التمرين
 
+      </h1>
 
-createHomeDays();
 
-showSelectedDay(
-settings.days[0] || "السبت"
-);
+      <p
+        id="currentExerciseDescription"
+        class="exercise-description">
 
-}
+      </p>
 
 
-/* ===================================
-   أيام الرئيسية
-=================================== */
+      <div
+        id="exerciseTimer"
+        class="timer-number">
 
-function createHomeDays(){
+        30
 
-const container=
-document.getElementById("homeDays");
+      </div>
 
-container.innerHTML="";
 
-const days=[
-"السبت",
-"الأحد",
-"الاثنين",
-"الثلاثاء",
-"الأربعاء",
-"الخميس",
-"الجمعة"
-];
+      <div class="timer-label">
 
-days.forEach(day=>{
+        ثانية
 
-const div=document.createElement("div");
+      </div>
 
-const selected=settings.days.includes(day);
 
-div.className=
-"day "+(selected?"selected":"disabled");
+      <div class="session-buttons">
 
-div.innerHTML=`
+        <button
+          id="pauseButton"
+          class="pause-button"
+          onclick="toggleWorkoutPause()">
 
-<div class="day-name">${day}</div>
+          إيقاف مؤقت
 
-<div class="day-check">
-${selected?"✓":"—"}
-</div>
+        </button>
 
-`;
 
-div.onclick=()=>{
+        <button
+          class="skip-button"
+          onclick="skipExercise()">
 
-if(selected){
+          تخطي ⏭️
 
-showSelectedDay(day);
+        </button>
 
-}
+      </div>
 
-};
+    </div>
 
-container.appendChild(div);
 
-});
 
-}
+    <!-- منطقة الراحة -->
 
+    <div
+      id="restArea"
+      class="rest-area hidden">
 
-/* ===================================
-   عرض تمارين اليوم
-=================================== */
+      <div class="rest-icon">
+        🧘
+      </div>
 
-let currentDay="";
+      <h1 class="rest-title">
+        وقت الراحة
+      </h1>
 
-function showSelectedDay(day){
 
-currentDay=day;
+      <div
+        id="restTimer"
+        class="rest-number">
 
-const workoutType=getWorkoutForDay();
+        25
 
-const list=
-exercises[workoutType];
+      </div>
 
-const container=
-document.getElementById("homeExercises");
 
-container.innerHTML="";
+      <p>
+        استعد للتمرين القادم
+      </p>
 
-list.forEach((exercise,index)=>{
 
-const row=document.createElement("div");
+      <div class="next-exercise-card">
 
-row.className="exercise-row";
+        <span>
+          التمرين القادم
+        </span>
 
-row.innerHTML=`
+        <strong
+          id="nextExerciseName">
 
-<div class="exercise-number">
-${index+1}
-</div>
+          التمرين القادم
 
-<div class="exercise-info">
+        </strong>
 
-<strong>${exercise.name}</strong>
+        <p
+          id="nextExerciseDescription">
 
-<span>
-${exercise.time} ثانية
-</span>
+        </p>
 
-</div>
+      </div>
 
-`;
 
-container.appendChild(row);
+      <div class="session-buttons">
 
-});
+        <button
+          class="pause-button"
+          onclick="toggleWorkoutPause()">
 
-document.getElementById("homeMessage")
-.textContent=
-`${day}: ${workoutType}`;
+          إيقاف مؤقت
 
-}
+        </button>
 
 
-/* ===================================
-   بدء تمرين اليوم
-=================================== */
+        <button
+          class="skip-button"
+          onclick="skipRest()">
 
-function startTodayWorkout(){
+          تخطي الراحة ⏭️
 
-if(!settings.days.length){
+        </button>
 
-alert("اختر أيام التمرين أولًا.");
+      </div>
 
-return;
+    </div>
 
-}
+  </section>
 
-startWorkout(currentDay);
 
-}
 
+  <!-- =========================================
+       شاشة النهاية
+  ========================================== -->
 
-/* ===================================
-   جلسة التمرين
-=================================== */
+  <section
+    id="finishScreen"
+    class="finish-screen hidden">
 
-let currentExercises=[];
-let currentExerciseIndex=0;
-let timer=null;
-let seconds=30;
-let paused=false;
-let restMode=false;
+    <div class="finish-box">
 
+      <div class="finish-icon">
+        🎉
+      </div>
 
-function startWorkout(day){
+      <h1>
+        أحسنت!
+      </h1>
 
-const type=getWorkoutForDay();
+      <p>
+        لقد أكملت جلسة MoveCare.
+      </p>
 
-currentExercises=
-exercises[type];
+      <button
+        class="primary-button"
+        onclick="closeFinishScreen()">
 
-currentExerciseIndex=0;
+        العودة للرئيسية
 
-document.getElementById("homeScreen")
-.classList.add("hidden");
+      </button>
 
-document.getElementById("workoutScreen")
-.classList.remove("hidden");
+    </div>
 
-document.getElementById("sessionDay")
-.textContent=day;
+  </section>
 
-showCurrentExercise();
 
-}
 
+  <!-- =========================================
+       JavaScript
+  ========================================== -->
 
-/* ===================================
-   عرض التمرين
-=================================== */
+  <script src="exercises.js"></script>
+  <script src="app.js"></script>
 
-function showCurrentExercise(){
 
-clearInterval(timer);
+  <!-- =========================================
+       وظائف الإعداد الأولي
+  ========================================== -->
 
-restMode=false;
+  <script>
 
-document.getElementById("restArea")
-.classList.add("hidden");
+    const SetupState = {
 
-document.getElementById("exerciseArea")
-.classList.remove("hidden");
+      goal: null,
 
-const exercise=
-currentExercises[currentExerciseIndex];
+      days: [],
 
-document.getElementById("currentExerciseName")
-.textContent=exercise.name;
+      level: null,
 
-document.getElementById("currentExerciseDescription")
-.textContent=exercise.description;
+      painArea: null,
 
-document.getElementById("exerciseTimer")
-.textContent=exercise.time;
+      painDetails: ""
 
-document.getElementById("sessionExerciseCount")
-.textContent=
-`التمرين ${currentExerciseIndex+1} من ${currentExercises.length}`;
+    };
 
-const progress=
-(currentExerciseIndex/currentExercises.length)*100;
 
-document.getElementById("sessionProgress")
-.style.width=progress+"%";
+    function selectOption(element, type) {
 
-paused=false;
+      const parent =
+        element.parentElement;
 
-document.getElementById("pauseButton")
-.textContent="إيقاف مؤقت";
+      parent
+        .querySelectorAll(".option")
+        .forEach(option => {
 
-start3DAnimation(exercise.type);
+          option.classList.remove(
+            "selected"
+          );
 
-seconds=exercise.time;
+        });
 
-timer=setInterval(()=>{
 
-if(paused)return;
+      element.classList.add(
+        "selected"
+      );
 
-seconds--;
 
-document.getElementById("exerciseTimer")
-.textContent=seconds;
+      if (type === "goal") {
 
-if(seconds<=0){
+        SetupState.goal =
+          element.dataset.goal;
 
-clearInterval(timer);
+      }
 
-startRest();
 
-}
+      if (type === "level") {
 
-},1000);
+        SetupState.level =
+          element.dataset.level;
 
-}
+      }
 
 
-/* ===================================
-   الراحة 25 ثانية
-=================================== */
+      if (type === "painArea") {
 
-function startRest(){
+        SetupState.painArea =
+          element.dataset.pain;
 
-restMode=true;
+      }
 
-document.getElementById("exerciseArea")
-.classList.add("hidden");
+    }
 
-document.getElementById("restArea")
-.classList.remove("hidden");
 
-let restSeconds=25;
+    function toggleSetupDay(element) {
 
-document.getElementById("restTimer")
-.textContent=restSeconds;
+      const day =
+        element.dataset.day;
 
-clearInterval(timer);
 
-timer=setInterval(()=>{
+      element.classList.toggle(
+        "selected"
+      );
 
-if(paused)return;
 
-restSeconds--;
+      if (
+        SetupState.days.includes(day)
+      ) {
 
-document.getElementById("restTimer")
-.textContent=restSeconds;
+        SetupState.days =
+          SetupState.days.filter(
+            item => item !== day
+          );
 
-if(restSeconds<=0){
+      } else {
 
-clearInterval(timer);
+        SetupState.days.push(day);
 
-nextExercise();
+      }
 
-}
+    }
 
-},1000);
 
-}
+    function nextSetupStep(step) {
 
+      if (step === 2 && !SetupState.goal) {
 
-/* ===================================
-   التالي
-=================================== */
+        alert(
+          "اختر هدفك أولًا."
+        );
 
-function nextExercise(){
+        return;
 
-currentExerciseIndex++;
+      }
 
-if(currentExerciseIndex>=currentExercises.length){
 
-finishWorkout();
+      if (
+        step === 3 &&
+        SetupState.days.length === 0
+      ) {
 
-return;
+        alert(
+          "اختر يومًا واحدًا على الأقل."
+        );
 
-}
+        return;
 
-showCurrentExercise();
+      }
 
-}
 
+      if (step === 4 && !SetupState.level) {
 
-/* ===================================
-   تخطي
-=================================== */
+        alert(
+          "اختر مستواك."
+        );
 
-function skipExercise(){
+        return;
 
-clearInterval(timer);
+      }
 
-if(restMode){
 
-nextExercise();
+      document
+        .querySelectorAll(".setup-step")
+        .forEach(section => {
 
-}else{
+          section.classList.remove(
+            "active"
+          );
 
-startRest();
+        });
 
-}
 
-}
+      const next =
+        document.getElementById(
+          "setupStep" + step
+        );
 
 
-/* ===================================
-   تخطي الراحة
-=================================== */
+      if (next) {
 
-function skipRest(){
+        next.classList.add(
+          "active"
+        );
 
-clearInterval(timer);
+      }
 
-nextExercise();
+    }
 
-}
 
+    function finishSetup() {
 
-/* ===================================
-   إيقاف مؤقت
-=================================== */
+      if (!SetupState.painArea) {
 
-function togglePause(){
+        SetupState.painArea =
+          "لا يوجد";
 
-paused=!paused;
+      }
 
-document.getElementById("pauseButton")
-.textContent=
-paused?"استئناف":"إيقاف مؤقت";
 
-}
+      SetupState.painDetails =
+        document.getElementById(
+          "painDetails"
+        )?.value || "";
 
 
-/* ===================================
-   الخروج
-=================================== */
+      const height =
+        document.getElementById(
+          "userHeight"
+        )?.value || "";
 
-function exitWorkout(){
 
-clearInterval(timer);
+      const weight =
+        document.getElementById(
+          "userWeight"
+        )?.value || "";
 
-document.getElementById("workoutScreen")
-.classList.add("hidden");
 
-document.getElementById("homeScreen")
-.classList.remove("hidden");
+      const settings = {
 
-}
+        goal:
+          SetupState.goal || "عام",
 
+        days:
+          SetupState.days,
 
-/* ===================================
-   إنهاء التمرين
-=================================== */
+        level:
+          SetupState.level || "مبتدئ",
 
-function finishWorkout(){
+        painArea:
+          SetupState.painArea,
 
-clearInterval(timer);
+        painDetails:
+          SetupState.painDetails,
 
-const completed=
-JSON.parse(
-localStorage.getItem("moveCareCompleted") || "[]"
-);
+        height:
+          height,
 
-if(!completed.includes(currentDay)){
+        weight:
+          weight
 
-completed.push(currentDay);
+      };
 
-localStorage.setItem(
-"moveCareCompleted",
-JSON.stringify(completed)
-);
 
-}
+      saveSettings(settings);
 
-document.getElementById("finishScreen")
-.classList.remove("hidden");
 
-}
+      document
+        .getElementById(
+          "setupScreen"
+        )
+        .classList.add("hidden");
 
 
-/* ===================================
-   إغلاق شاشة النهاية
-=================================== */
+      document
+        .getElementById(
+          "homeScreen"
+        )
+        .classList.remove("hidden");
 
-function closeFinish(){
 
-document.getElementById("finishScreen")
-.classList.add("hidden");
+      AppState.selectedDay =
+        settings.days[0];
 
-document.getElementById("workoutScreen")
-.classList.add("hidden");
 
-document.getElementById("homeScreen")
-.classList.remove("hidden");
+      createDaysUI();
 
-loadHome();
+      updateHomeStats();
 
-}
+      showDayWorkout(
+        AppState.selectedDay
+      );
 
+    }
 
-/* ===================================
-   إعادة الإعداد
-=================================== */
 
-function resetSettings(){
+    function createDaysUI() {
 
-if(confirm("هل تريد إعادة إعداد برنامج MoveCare؟")){
+      const container =
+        document.getElementById(
+          "daysContainer"
+        );
 
-localStorage.removeItem("moveCareSettings");
 
-localStorage.removeItem("moveCareCompleted");
+      if (!container) {
 
-location.reload();
+        return;
 
-}
+      }
 
-}
 
+      container.innerHTML = "";
 
-/* ===================================
-   THREE.JS
-   شخصية ثلاثية الأبعاد
-=================================== */
 
-let scene;
-let camera;
-let renderer;
+      const selectedDays =
+        AppState.settings?.days || [];
 
-let human;
 
-let animationType="idle";
+      selectedDays.forEach(day => {
 
-let animationTime=0;
+        const button =
+          document.createElement(
+            "button"
+          );
 
 
-/* إنشاء الشخصية */
+        button.className =
+          "day";
 
-function createHuman(){
 
-human=new THREE.Group();
+        if (
+          day ===
+          AppState.selectedDay
+        ) {
 
-scene.add(human);
+          button.classList.add(
+            "selected"
+          );
 
+        }
 
-/* الرأس */
 
-const headGeometry=
-new THREE.SphereGeometry(0.25,24,24);
+        button.innerHTML = `
 
-const headMaterial=
-new THREE.MeshStandardMaterial({
-color:0xffc7a8
-});
+          <div class="day-name">
+            ${day}
+          </div>
 
-const head=
-new THREE.Mesh(
-headGeometry,
-headMaterial
-);
+          <div class="day-check">
+            ✓
+          </div>
 
-head.position.y=2.7;
+        `;
 
-human.add(head);
 
+        button.onclick = () => {
 
-/* الجسم */
+          document
+            .querySelectorAll(
+              "#daysContainer .day"
+            )
+            .forEach(item => {
 
-const bodyGeometry=
-new THREE.CapsuleGeometry
-?new THREE.CapsuleGeometry(.35,1.0,8,16)
-:null;
+              item.classList.remove(
+                "selected"
+              );
 
+            });
 
-/*
-إذا لم تكن CapsuleGeometry موجودة
-نستخدم أسطوانة.
-*/
 
-let body;
+          button.classList.add(
+            "selected"
+          );
 
-if(bodyGeometry){
 
-body=
-new THREE.Mesh(
-bodyGeometry,
-new THREE.MeshStandardMaterial({
-color:0x1677ff
-})
-);
+          selectWorkoutDay(day);
 
-}else{
+        };
 
-body=
-new THREE.Mesh(
-new THREE.CylinderGeometry(.35,.4,1.2,16),
-new THREE.MeshStandardMaterial({
-color:0x1677ff
-})
-);
 
-}
+        container.appendChild(
+          button
+        );
 
-body.position.y=1.8;
+      });
 
-human.add(body);
+    }
 
 
-/* الأطراف */
+    /*
+      بعد تحميل الصفحة:
+      أنشئ الأيام إذا كان المستخدم
+      قد أكمل الإعداد مسبقًا.
+    */
 
-function limb(length=.9){
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
 
-return new THREE.Mesh(
+        setTimeout(() => {
 
-new THREE.CylinderGeometry(
-.12,
-.12,
-length,
-12
-),
+          if (AppState.settings) {
 
-new THREE.MeshStandardMaterial({
-color:0x1677ff
-})
+            createDaysUI();
 
-);
+          }
 
-}
+        }, 100);
 
+      }
+    );
 
-/* الذراعان */
+  </script>
 
-human.leftArm=limb();
 
-human.rightArm=limb();
+  <!-- =========================================
+       نظام الشخصية ثلاثية الأبعاد
+       نسخة أولية
+  ========================================== -->
 
-human.leftArm.position.set(-.55,2.05,0);
+  <script>
 
-human.rightArm.position.set(.55,2.05,0);
+    let scene;
 
-human.leftArm.rotation.z=-.35;
+    let camera;
 
-human.rightArm.rotation.z=.35;
+    let renderer;
 
-human.add(human.leftArm);
+    let character;
 
-human.add(human.rightArm);
+    let animationFrame;
 
 
-/* الساقان */
+    function init3DCharacter() {
 
-human.leftLeg=limb(1.1);
+      const container =
+        document.getElementById(
+          "threeContainer"
+        );
 
-human.rightLeg=limb(1.1);
 
-human.leftLeg.position.set(-.22,.75,0);
+      if (!container) {
 
-human.rightLeg.position.set(.22,.75,0);
+        return;
 
-human.add(human.leftLeg);
+      }
 
-human.add(human.rightLeg);
 
+      if (
+        typeof THREE ===
+        "undefined"
+      ) {
 
-/* الأرض */
+        console.error(
+          "Three.js لم يتم تحميلها."
+        );
 
-const floor=
-new THREE.Mesh(
+        return;
 
-new THREE.CircleGeometry(2.2,40),
+      }
 
-new THREE.MeshStandardMaterial({
-color:0xe4edf8
-})
 
-);
+      scene =
+        new THREE.Scene();
 
-floor.rotation.x=-Math.PI/2;
 
-floor.position.y=.05;
+      camera =
+        new THREE.PerspectiveCamera(
+          45,
+          container.clientWidth /
+            container.clientHeight,
+          0.1,
+          100
+        );
 
-human.add(floor);
 
-}
+      camera.position.set(
+        0,
+        1.4,
+        4.5
+      );
 
 
-/* ===================================
-   إعداد THREE
-=================================== */
+      renderer =
+        new THREE.WebGLRenderer({
+          antialias: true,
+          alpha: true
+        });
 
-function setup3D(){
 
-const container=
-document.getElementById("threeContainer");
+      renderer.setPixelRatio(
+        Math.min(
+          window.devicePixelRatio,
+          2
+        )
+      );
 
-scene=new THREE.Scene();
 
-scene.background=
-new THREE.Color(0xf0f6ff);
+      renderer.setSize(
+        container.clientWidth,
+        container.clientHeight
+      );
 
-camera=
-new THREE.PerspectiveCamera(
-45,
-container.clientWidth/container.clientHeight,
-.1,
-100
-);
 
-camera.position.set(0,2.3,6);
+      container.appendChild(
+        renderer.domElement
+      );
 
-camera.lookAt(0,1.5,0);
 
+      /*
+        الإضاءة
+      */
 
-renderer=
-new THREE.WebGLRenderer({
-antialias:true,
-alpha:true
-});
+      const ambient =
+        new THREE.AmbientLight(
+          0xffffff,
+          1.5
+        );
 
-renderer.setPixelRatio(
-Math.min(window.devicePixelRatio,2)
-);
+      scene.add(
+        ambient
+      );
 
-renderer.setSize(
-container.clientWidth,
-container.clientHeight
-);
 
-container.appendChild(renderer.domElement);
+      const light =
+        new THREE.DirectionalLight(
+          0xffffff,
+          2
+        );
 
 
-/* الإضاءة */
+      light.position.set(
+        2,
+        4,
+        3
+      );
 
-const light=
-new THREE.HemisphereLight(
-0xffffff,
-0xb8c9df,
-1.5
-);
 
-scene.add(light);
+      scene.add(
+        light
+      );
 
 
-const directional=
-new THREE.DirectionalLight(
-0xffffff,
-1.3
-);
+      /*
+        إنشاء شخصية بسيطة ثلاثية الأبعاد
+      */
 
-directional.position.set(3,5,4);
+      character =
+        new THREE.Group();
 
-scene.add(directional);
 
+      /*
+        الجسم
+      */
 
-createHuman();
+      const bodyGeometry =
+        new THREE.CapsuleGeometry(
+          0.38,
+          0.85,
+          8,
+          16
+        );
 
-animate3D();
 
-}
+      const bodyMaterial =
+        new THREE.MeshStandardMaterial({
+          color: 0x4f8cff
+        });
 
 
-/* ===================================
-   تحريك الشخصية
-=================================== */
+      const body =
+        new THREE.Mesh(
+          bodyGeometry,
+          bodyMaterial
+        );
 
-function animate3D(){
 
-requestAnimationFrame(animate3D);
+      body.position.y =
+        1.45;
 
-if(human){
 
-animationTime+=.045;
+      character.add(
+        body
+      );
 
-const t=animationTime;
 
+      /*
+        الرأس
+      */
 
-/* دوران خفيف */
+      const headGeometry =
+        new THREE.SphereGeometry(
+          0.28,
+          24,
+          24
+        );
 
-human.rotation.y=
-Math.sin(t*.5)*.08;
 
+      const headMaterial =
+        new THREE.MeshStandardMaterial({
+          color: 0xffd2b8
+        });
 
-/* القرفصاء */
 
-if(animationType==="squat"){
+      const head =
+        new THREE.Mesh(
+          headGeometry,
+          headMaterial
+        );
 
-const squat=
-(Math.sin(t*2)+1)/2;
 
-human.position.y=
--squat*.45;
+      head.position.y =
+        2.35;
 
-human.leftLeg.rotation.x=
--squat*.45;
 
-human.rightLeg.rotation.x=
--squat*.45;
+      character.add(
+        head
+      );
 
-human.leftArm.rotation.z=
--.35-squat*.3;
 
-human.rightArm.rotation.z=
-.35+squat*.3;
+      /*
+        الذراعان
+      */
 
-}
+      const armGeometry =
+        new THREE.CapsuleGeometry(
+          0.11,
+          0.65,
+          8,
+          12
+        );
 
 
-/* المشي */
+      const armMaterial =
+        new THREE.MeshStandardMaterial({
+          color: 0x4f8cff
+        });
 
-else if(animationType==="walk"){
 
-human.position.y=
-Math.abs(Math.sin(t*3))*.12;
+      const leftArm =
+        new THREE.Mesh(
+          armGeometry,
+          armMaterial
+        );
 
-human.leftLeg.rotation.x=
-Math.sin(t*3)*.5;
 
-human.rightLeg.rotation.x=
--Math.sin(t*3)*.5;
+      const rightArm =
+        new THREE.Mesh(
+          armGeometry,
+          armMaterial
+        );
 
-human.leftArm.rotation.x=
--Math.sin(t*3)*.35;
 
-human.rightArm.rotation.x=
-Math.sin(t*3)*.35;
+      leftArm.position.set(
+        -0.5,
+        1.5,
+        0
+      );
 
-}
 
+      rightArm.position.set(
+        0.5,
+        1.5,
+        0
+      );
 
-/* الضغط */
 
-else if(animationType==="push"){
+      character.add(
+        leftArm,
+        rightArm
+      );
 
-const push=
-(Math.sin(t*2)+1)/2;
 
-human.rotation.x=
-push*.45;
+      /*
+        الرجلان
+      */
 
-human.position.y=
-push*.15;
+      const legGeometry =
+        new THREE.CapsuleGeometry(
+          0.14,
+          0.75,
+          8,
+          12
+        );
 
-}
 
+      const legMaterial =
+        new THREE.MeshStandardMaterial({
+          color: 0x303b55
+        });
 
-/* الذراعان */
 
-else if(animationType==="arms"){
+      const leftLeg =
+        new THREE.Mesh(
+          legGeometry,
+          legMaterial
+        );
 
-human.leftArm.rotation.x=
-Math.sin(t*2)*.8;
 
-human.rightArm.rotation.x=
--Math.sin(t*2)*.8;
+      const rightLeg =
+        new THREE.Mesh(
+          legGeometry,
+          legMaterial
+        );
 
-}
 
+      leftLeg.position.set(
+        -0.2,
+        0.55,
+        0
+      );
 
-/* التمدد */
 
-else if(animationType==="stretch"){
+      rightLeg.position.set(
+        0.2,
+        0.55,
+        0
+      );
 
-human.rotation.z=
-Math.sin(t)*.18;
 
-human.leftArm.rotation.z=
--.9+Math.sin(t)*.1;
+      character.add(
+        leftLeg,
+        rightLeg
+      );
 
-human.rightArm.rotation.z=
-.9-Math.sin(t)*.1;
 
-}
+      /*
+        حفظ أجزاء الجسم
+      */
 
+      character.userData = {
 
-/* البلانك */
+        body,
 
-else if(animationType==="plank"){
+        head,
 
-human.rotation.z=-1.1;
+        leftArm,
 
-human.position.y=.7;
+        rightArm,
 
-}
+        leftLeg,
 
+        rightLeg
 
-/* الساق */
+      };
 
-else if(animationType==="leg"){
 
-human.leftLeg.rotation.x=
-Math.sin(t*2)*.6;
+      scene.add(
+        character
+      );
 
-}
 
+      /*
+        أرضية بسيطة
+      */
 
-/* الوضع الطبيعي */
+      const floorGeometry =
+        new THREE.CircleGeometry(
+          1.5,
+          40
+        );
 
-else{
 
-human.position.y=0;
+      const floorMaterial =
+        new THREE.MeshStandardMaterial({
+          color: 0xdceaff
+        });
 
-human.rotation.x=0;
 
-human.rotation.z=0;
+      const floor =
+        new THREE.Mesh(
+          floorGeometry,
+          floorMaterial
+        );
 
-}
 
-}
+      floor.rotation.x =
+        -Math.PI / 2;
 
-renderer.render(scene,camera);
 
-}
+      floor.position.y =
+        0.05;
 
 
-/* ===================================
-   تغيير حركة 3D
-=================================== */
+      scene.add(
+        floor
+      );
 
-function start3DAnimation(type){
 
-animationType=type;
+      animate3D();
 
-animationTime=0;
+    }
 
-}
 
+    function animate3D() {
 
-/* ===================================
-   بدء التطبيق
-=================================== */
+      animationFrame =
+        requestAnimationFrame(
+          animate3D
+        );
 
-window.addEventListener("load",()=>{
 
-loadSettings();
+      if (character) {
 
-if(!settings){
+        character.rotation.y =
+          Math.sin(
+            Date.now() * 0.0006
+          ) * 0.05;
 
-document.getElementById("setupScreen")
-.classList.remove("hidden");
+      }
 
-}else{
 
-document.getElementById("setupScreen")
-.classList.add("hidden");
+      if (renderer) {
 
-loadHome();
+        renderer.render(
+          scene,
+          camera
+        );
 
-}
+      }
 
-setup3D();
+    }
 
-});
 
+    /*
+      حركات الشخصية
+    */
 
-/* ===================================
-   تغيير حجم الشاشة
-=================================== */
+    function set3DMovement(type) {
 
-window.addEventListener("resize",()=>{
+      if (!character) {
 
-if(!renderer)return;
+        return;
 
-const container=
-document.getElementById("threeContainer");
+      }
 
-camera.aspect=
-container.clientWidth/container.clientHeight;
 
-camera.updateProjectionMatrix();
+      const parts =
+        character.userData;
 
-renderer.setSize(
-container.clientWidth,
-container.clientHeight
-);
 
-});
+      /*
+        إعادة الوضع
+      */
 
-</script>
+      parts.leftArm.rotation.z = 0;
+
+      parts.rightArm.rotation.z = 0;
+
+      parts.leftLeg.rotation.z = 0;
+
+      parts.rightLeg.rotation.z = 0;
+
+      character.position.y = 0;
+
+
+      if (type === "squat") {
+
+        parts.leftLeg.rotation.z =
+          -0.15;
+
+        parts.rightLeg.rotation.z =
+          0.15;
+
+      }
+
+
+      if (type === "push") {
+
+        character.rotation.x =
+          -0.35;
+
+        parts.leftArm.rotation.z =
+          -0.7;
+
+        parts.rightArm.rotation.z =
+          0.7;
+
+      }
+
+
+      if (type === "arms") {
+
+        parts.leftArm.rotation.z =
+          -0.8;
+
+        parts.rightArm.rotation.z =
+          0.8;
+
+      }
+
+
+      if (type === "lunge") {
+
+        parts.leftLeg.rotation.z =
+          -0.4;
+
+        parts.rightLeg.rotation.z =
+          0.25;
+
+      }
+
+
+      if (type === "stretch") {
+
+        parts.leftArm.rotation.z =
+          -1;
+
+        parts.rightArm.rotation.z =
+          1;
+
+      }
+
+
+      if (type === "plank") {
+
+        character.rotation.z =
+          0.7;
+
+      }
+
+
+      if (type === "balance") {
+
+        parts.leftLeg.rotation.z =
+          -0.7;
+
+      }
+
+
+      if (type === "walk") {
+
+        parts.leftArm.rotation.z =
+          -0.4;
+
+        parts.rightArm.rotation.z =
+          0.4;
+
+      }
+
+
+      if (type === "bridge") {
+
+        character.position.y =
+          0.2;
+
+      }
+
+
+      if (type === "calf") {
+
+        character.position.y =
+          0.1;
+
+      }
+
+    }
+
+
+    function previewMovement(type) {
+
+      set3DMovement(type);
+
+    }
+
+
+    /*
+      عند فتح الصفحة،
+      نحاول تشغيل الشخصية.
+    */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+        setTimeout(
+          init3DCharacter,
+          500
+        );
+
+      }
+    );
+
+
+    /*
+      تغيير حجم الشخصية عند تغيير
+      حجم الشاشة.
+    */
+
+    window.addEventListener(
+      "resize",
+      () => {
+
+        const container =
+          document.getElementById(
+            "threeContainer"
+          );
+
+
+        if (
+          !container ||
+          !camera ||
+          !renderer
+        ) {
+
+          return;
+
+        }
+
+
+        camera.aspect =
+          container.clientWidth /
+          container.clientHeight;
+
+
+        camera.updateProjectionMatrix();
+
+
+        renderer.setSize(
+          container.clientWidth,
+          container.clientHeight
+        );
+
+      }
+    );
+
+  </script>
 
 </body>
+
   </html>
