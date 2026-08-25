@@ -1,1 +1,639 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, Tahoma, sans-serif;
+}
 
+:root {
+  --primary: #1677ff;
+  --primary-dark: #0d5ed7;
+  --background: #f4f7fb;
+  --card: #ffffff;
+  --text: #172033;
+  --muted: #68778c;
+  --border: #e4eaf2;
+  --success: #20b26b;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* الخلفية */
+
+.background-decoration {
+  position: fixed;
+  border-radius: 50%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.decoration-one {
+  width: 280px;
+  height: 280px;
+  background: #dceaff;
+  top: -120px;
+  right: -100px;
+}
+
+.decoration-two {
+  width: 230px;
+  height: 230px;
+  background: #def6e9;
+  bottom: -100px;
+  left: -90px;
+}
+
+/* الهيدر */
+
+header {
+  background: linear-gradient(135deg, #1677ff, #55a5ff);
+  color: white;
+  padding: 22px 18px;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 6px 25px rgba(22, 119, 255, 0.22);
+}
+
+.header-inner {
+  max-width: 950px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.header-subtitle {
+  margin-top: 5px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* المحتوى */
+
+.container {
+  max-width: 950px;
+  margin: auto;
+  padding: 20px 15px 60px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 22px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 5px 20px rgba(20, 40, 80, 0.07);
+}
+
+.primary-button {
+  width: 100%;
+  border: 0;
+  background: var(--primary);
+  color: white;
+  padding: 14px;
+  border-radius: 13px;
+  font-size: 17px;
+}
+
+.primary-button:hover {
+  background: var(--primary-dark);
+}
+
+.secondary-button {
+  width: 100%;
+  border: 0;
+  background: #edf2f8;
+  color: var(--text);
+  padding: 13px;
+  border-radius: 13px;
+  font-size: 16px;
+}
+
+/* الصفحة الرئيسية */
+
+.hero {
+  padding: 25px 20px;
+}
+
+.hero h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.hero p {
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.stat {
+  background: #f5f8fd;
+  border-radius: 16px;
+  text-align: center;
+  padding: 15px 5px;
+}
+
+.stat strong {
+  display: block;
+  font-size: 23px;
+  color: var(--primary);
+}
+
+.stat span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* الأيام */
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day {
+  border: 2px solid transparent;
+  background: #f5f8fd;
+  border-radius: 14px;
+  padding: 11px 4px;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.day.selected {
+  background: var(--primary);
+  color: white;
+}
+
+.day.today {
+  border-color: var(--primary);
+}
+
+.day.disabled {
+  opacity: 0.45;
+}
+
+.day-name {
+  font-size: 12px;
+}
+
+.day-number {
+  font-size: 19px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.day-check {
+  margin-top: 5px;
+}
+
+/* قائمة التمارين */
+
+.exercise-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.exercise-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.exercise-row:last-child {
+  border-bottom: 0;
+}
+
+.exercise-number {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #e9f2ff;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.exercise-info {
+  flex: 1;
+}
+
+.exercise-info strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.exercise-info span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* شاشة الإعداد */
+
+.setup-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--background);
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.setup-box {
+  max-width: 620px;
+  margin: auto;
+  padding: 30px 18px 60px;
+}
+
+.setup-logo {
+  text-align: center;
+  color: var(--primary);
+  font-size: 35px;
+  font-weight: bold;
+  margin: 10px 0 35px;
+}
+
+.setup-step {
+  display: none;
+}
+
+.setup-step.active {
+  display: block;
+}
+
+.setup-title {
+  font-size: 26px;
+  margin-bottom: 8px;
+}
+
+.setup-description {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 22px 0;
+}
+
+.option {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 17px;
+  padding: 18px 10px;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.option.selected {
+  border-color: var(--primary);
+  background: #eef5ff;
+}
+
+.option-icon {
+  font-size: 31px;
+}
+
+.option strong {
+  display: block;
+  margin-top: 8px;
+}
+
+.day-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px;
+  margin: 20px 0;
+}
+
+.day-option {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+}
+
+.day-option.selected {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.input-group {
+  margin: 18px 0;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: bold;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 13px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  font-size: 16px;
+  background: white;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  border-color: var(--primary);
+}
+
+/* شاشة التمرين */
+
+.workout-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--background);
+  z-index: 90;
+  overflow-y: auto;
+}
+
+.workout-top {
+  max-width: 750px;
+  margin: auto;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-button {
+  border: 0;
+  background: white;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  font-size: 19px;
+}
+
+.session-info {
+  text-align: center;
+}
+
+.session-info strong {
+  display: block;
+}
+
+.session-info span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.progress-container {
+  max-width: 750px;
+  margin: auto;
+  padding: 0 15px;
+}
+
+.progress-background {
+  height: 7px;
+  background: #dfe6ef;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+  transition: 0.3s;
+}
+
+/* منطقة الشخصية ثلاثية الأبعاد */
+
+.model-card {
+  max-width: 750px;
+  margin: 15px auto;
+  padding: 0 15px;
+}
+
+.model-box {
+  height: 340px;
+  background: linear-gradient(145deg, #eaf3ff, #f9fbff);
+  border-radius: 25px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #dce8f7;
+}
+
+#threeContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.model-label {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  z-index: 2;
+}
+
+/* معلومات التمرين */
+
+.exercise-area {
+  max-width: 650px;
+  margin: auto;
+}
+
+.exercise-title {
+  text-align: center;
+  font-size: 28px;
+  margin: 15px 0 5px;
+}
+
+.exercise-description {
+  text-align: center;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 550px;
+  margin: auto;
+  padding: 0 15px;
+}
+
+.timer-number {
+  text-align: center;
+  font-size: 70px;
+  font-weight: bold;
+  color: var(--primary);
+  margin: 8px 0 0;
+}
+
+.timer-label {
+  text-align: center;
+  color: var(--muted);
+}
+
+.session-buttons {
+  max-width: 520px;
+  margin: 15px auto 35px;
+  padding: 0 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.skip-button,
+.pause-button {
+  border: 0;
+  border-radius: 13px;
+  padding: 14px;
+  font-size: 16px;
+}
+
+.skip-button {
+  background: #edf2f8;
+  color: var(--text);
+}
+
+.pause-button {
+  background: var(--primary);
+  color: white;
+}
+
+/* الراحة */
+
+.rest-area {
+  max-width: 650px;
+  margin: auto;
+  text-align: center;
+  padding: 15px;
+}
+
+.rest-icon {
+  font-size: 60px;
+}
+
+.rest-title {
+  font-size: 28px;
+}
+
+.rest-number {
+  font-size: 76px;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.next-exercise-card {
+  background: white;
+  border-radius: 18px;
+  padding: 15px;
+  margin: 15px auto;
+  max-width: 430px;
+  box-shadow: 0 4px 15px rgba(20, 40, 80, 0.07);
+}
+
+.next-exercise-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+/* شاشة النهاية */
+
+.finish-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--background);
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.finish-box {
+  background: white;
+  max-width: 450px;
+  width: 100%;
+  border-radius: 25px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.finish-icon {
+  font-size: 70px;
+}
+
+.finish-box h1 {
+  margin-bottom: 8px;
+}
+
+/* التنبيه */
+
+.warning {
+  background: #fff8e6;
+  border: 1px solid #f2d58a;
+  color: #795c14;
+  padding: 13px;
+  border-radius: 13px;
+  line-height: 1.6;
+  font-size: 13px;
+  margin: 15px 0;
+}
+
+/* شاشات صغيرة */
+
+@media (max-width: 600px) {
+
+  .days {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .model-box {
+    height: 290px;
+  }
+
+  .logo {
+    font-size: 25px;
+  }
+
+  .exercise-title {
+    font-size: 25px;
+  }
+
+}
